@@ -1,5 +1,4 @@
-## README
-
-# Dependencies
-# Installing
-# Running
+# README
+## Dependencies
+## Installing
+## Running
