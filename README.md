@@ -1,4 +1,9 @@
 # README
 ## Dependencies
+- Python3
+- Tkinter
+- Numpy
+- Pandas
+- Matplotlib
 ## Installing
 ## Running
