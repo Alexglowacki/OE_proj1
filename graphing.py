@@ -4,7 +4,6 @@ import numpy as np
 from datetime import datetime
 
 import tkinter as Tk
-from itertools import count
 from matplotlib.animation import FuncAnimation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 

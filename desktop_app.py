@@ -27,46 +27,29 @@ class SampleApp(tk.Tk):
 class StartPage(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master, bg='#161b1c', borderwidth=1)
-        
-        def show():
-            label.config(text=clicked.get())
 
-        options = [
+        methods = [
             "Default choice",
             "Select best",
             "Roulette",
             "Tournament",
         ]
 
-
         clicked = StringVar()
-        clicked.set("Default choice")
+        clicked.set(methods[0])
         print(str(clicked.get()))
-
-        drop = OptionMenu(self, clicked, *options,)
+  
+        drop = OptionMenu(self, clicked, *methods,)
         drop.pack()
 
         tk.Button(self,
-                  text="Choose a method", 
-                  font=('arial', 10, 'bold'), 
-                  bg="#20272b",
-                  borderwidth='0', 
-                  fg="white", 
-                  command=show).pack(side="top")
-
-        label = Label(self, text='')
-        label.pack(side="top")
-
-        glob_method = str(clicked.get())
-        print(glob_method)
-
-        tk.Button(self,
-                  text="Calculate!",
-                  command=lambda: master.switch_frame(ResultsPage),
-                  bg="#20272b",
-                  font=('arial', 10, 'bold'),
-                  borderwidth = '0',
-                  fg="white").pack(pady=5, padx=25)
+                text="Calculate!",
+                # command=lambda: master.switch_frame(ResultsPage),
+                command=lambda: run_calculations(str(clicked.get())),
+                bg="#20272b",
+                font=('arial', 10, 'bold'),
+                borderwidth = '0',
+                fg="white").pack(pady=5, padx=25)
         
         tk.Button(self,
                 text="See plots",
@@ -83,17 +66,17 @@ class ResultsPage(tk.Frame):
         tk.Label(self, text="Results").pack(side="top", fill="x", pady=100)
 
         # hardocded for testing
-        print(glob_method)
+        print(f"bigman{glob_method}")
         run_calculations(method=glob_method)
 
         # go back button
         tk.Button(self,
-                  text="Go back",
-                  command=lambda: master.switch_frame(StartPage),
-                  bg="#20272b",
-                  font=('arial', 10, 'bold'),
-                  borderwidth='0',
-                  fg="white").pack(side="bottom")  
+                text="Go back",
+                command=lambda: master.switch_frame(StartPage),
+                bg="#20272b",
+                font=('arial', 10, 'bold'),
+                borderwidth='0',
+                fg="white").pack(side="bottom")  
                 
 if __name__ == "__main__":
     app = SampleApp()
