@@ -1,9 +1,10 @@
+from time import sleep
 import tkinter as tk
 from tkinter import *
 from tkinter.ttk import * 
 
 from graphing import graph_results
-from calculate import run_calculations
+from calculate import Calculations
 
 background_colour = '#161b1c'
 button_bg_colour = '#20272b'
@@ -168,7 +169,7 @@ class StartPage(tk.Frame):
 
         tk.Button(self,
                 text="Calculate!",
-                command=lambda: [run_calculations(str(selection_clicked.get())), master.switch_frame(ResultsPage)],
+                command=lambda: [Calculations.run_calculations(str(selection_clicked.get())), master.switch_frame(ResultsPage)],
                 bg=button_bg_colour,
                 font=('arial', 10, 'bold'),
                 borderwidth = '0',
@@ -181,6 +182,13 @@ class ResultsPage(tk.Frame):
         window_label = tk.Label(self, 
                                  text="Genetic algorith for optimization in Rana function - Results:",                 
                                  bg=background_colour,
+                                 font=('arial', 10, 'bold'),
+                                 borderwidth = '0',
+                                 fg="white").pack(pady=15, padx=25, side='top')
+
+        time_result = tk.Label(self, 
+                               text=f"Working time: {Calculations.algorithm_time} s", 
+                               bg=background_colour,
                                  font=('arial', 10, 'bold'),
                                  borderwidth = '0',
                                  fg="white").pack(pady=15, padx=25, side='top')
