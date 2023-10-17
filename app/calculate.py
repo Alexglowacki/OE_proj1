@@ -9,23 +9,66 @@ import csv
 # add more parameters to the definitioin
 class Calculations():
     algorithm_time = 0
-    def run_calculations(selection_method: str) -> None:
+    def run_calculations(range_start: float, 
+                         range_end: float,
+                         epoch: int, 
+                         elite_strategy: float,
+                         cross_probability: float,
+                         mutation_probability: float,
+                         inversion_probability: float, 
+                         selection_method: str,
+                         percent: float,
+                         tournament: float,
+                         cross_method: str,
+                         mutation_method: str,
+                         roulette_status: bool) -> None:
+        """_summary_
+
+        Args:
+            range_start (float): _description_
+            range_end (float): _description_
+            epoch (int): _description_
+            elite_strategy (float): _description_
+            cross_probability (float): _description_
+            mutation_probability (float): _description_
+            inversion_probability (float): _description_
+            selection_method (str): _description_
+            percent (float): _description_
+            tournament (float): _description_
+            cross_method (str): _description_
+            mutation_method (str): _description_
+            roulette_status (bool, optional): _description_. Defaults to False.
+        """
 
         print("Running calculations...")
         selection_method = selection_method.lower()
+        cross_method = cross_method.lower()
+        mutation_method = mutation_method.lower()
+
+        # debug - to be deleted 
+        print(f"Range start: {range_start}")
+        print(f"Range end: {range_end}")
+        print(f"Epoch: {epoch}")
+        print(f"Elite strategy: {elite_strategy}")
+        print(f"Cross probability: {cross_probability}")
+        print(f"Mutation probability: {mutation_probability}")
+        print(f"Inversion probability: {inversion_probability}")
         print(f"Picked selection_method: {selection_method}")
+        print(f"Percent to next: {percent}")
+        print(f"Tournaments: {tournament}")
+        print(f"Picked cross_method: {cross_method}")
+        print(f"Picked mutation_method: {mutation_method}")
+        print(f"Picked is min/max {roulette_status}")
 
         # test value 10% best
-        select_best_param = 10
-
-        roulette_status = 1
+        select_best_param = percent
 
         start_time = datetime.now()
 
         if selection_method == "select best":
             Calculations.run_select_best(select_best_param)
         elif selection_method == "roulette":
-            if roulette_status == 1:
+            if roulette_status:
                 Calculations.run_roulette(True)
             else:
                 Calculations.run_roulette(False)

@@ -46,7 +46,9 @@ class StartPage(tk.Frame):
 
         range_start = tk.Text(self, 
                           height=1, 
-                          width=5).pack(pady=5, padx=25)
+                          width=5)
+        range_start.pack(pady=5, padx=25)
+        
         
         range_end_label = tk.Label(self, 
                                  text="Enter range end",                 
@@ -57,7 +59,8 @@ class StartPage(tk.Frame):
 
         range_end = tk.Text(self, 
                           height=1, 
-                          width=5).pack(pady=5, padx=25)
+                          width=5)
+        range_end.pack(pady=5, padx=25)
         
         epoch_label = tk.Label(self, 
                                  text="Enter number of epochs:",                 
@@ -68,7 +71,8 @@ class StartPage(tk.Frame):
 
         epoch = tk.Text(self, 
                           height=1, 
-                          width=5).pack(pady=5, padx=25)
+                          width=5)
+        epoch.pack(pady=5, padx=25)
         
         elite_strategy_label = tk.Label(self, 
                                         text="Enter elite strategy [%]",                 
@@ -79,51 +83,57 @@ class StartPage(tk.Frame):
 
         elite_strategy = tk.Text(self, 
                                 height=1, 
-                                width=5).pack(pady=5, padx=25)
+                                width=5)
+        elite_strategy.pack(pady=5, padx=25)
         
-        cross_probablity_label = tk.Label(self, 
+        cross_probability_label = tk.Label(self, 
                                         text="Enter cross probability [%]",                 
                                         bg=background_colour,
                                         font=('arial', 10),
                                         borderwidth = '0',
                                         fg="white").pack(pady=5, padx=25)
 
-        cross_probablity_size = tk.Text(self, 
+        cross_probability_size = tk.Text(self, 
                                 height=1, 
-                                width=5).pack(pady=5, padx=25)
+                                width=5)
+        cross_probability_size.pack(pady=5, padx=25)
         
 
-        mutation_probablity_label = tk.Label(self, 
+        mutation_probability_label = tk.Label(self, 
                                         text="Enter mutation probability [%]",                 
                                         bg=background_colour,
                                         font=('arial', 10),
                                         borderwidth = '0',
                                         fg="white").pack(pady=5, padx=25)
 
-        mutation_probablity_size = tk.Text(self, 
+        mutation_probability_size = tk.Text(self, 
                                 height=1, 
-                                width=5).pack(pady=5, padx=25)
+                                width=5)
+        mutation_probability_size.pack(pady=5, padx=25)
 
-        inversion_probablity_label = tk.Label(self, 
+        inversion_probability_label = tk.Label(self, 
                                         text="Enter inversion probability [%]",                 
                                         bg=background_colour,
                                         font=('arial', 10),
                                         borderwidth = '0',
                                         fg="white").pack(pady=5, padx=25)
 
-        inversion_probablity_size = tk.Text(self, 
+        inversion_probability_size = tk.Text(self, 
                                 height=1, 
-                                width=5).pack(pady=5, padx=25)
+                                width=5)
+        inversion_probability_size.pack(pady=5, padx=25)
 
         # checkbox for minimalisation problem
+        state = IntVar()
         roulette_checkbox = tk.Checkbutton(self, 
                                            text="Minimalisation problem", 
                                            bg=background_colour,
                                            font=('arial', 10, 'bold'),
                                            borderwidth = '0',
-                                        #    fg="white", for whatever reason this makes the checkbox unclickable
-                                           onvalue=1, 
-                                           offvalue=0).pack(pady=5, padx=25)
+                                        # fg="white", for whatever reason this makes the checkbox unclickable
+                                           variable=state, 
+                                           )
+        roulette_checkbox.pack(pady=5, padx=25)
 
         selection_methods = [
             "Pick a selection method",
@@ -148,7 +158,8 @@ class StartPage(tk.Frame):
 
         percent = tk.Text(self, 
                           height=1, 
-                          width=5).pack(pady=5, padx=25)
+                          width=5)
+        percent.pack(pady=5, padx=25)
         
         tournament_size_label = tk.Label(self, 
                                         text="Enter tournament size",                 
@@ -159,7 +170,8 @@ class StartPage(tk.Frame):
 
         tournament_size = tk.Text(self, 
                                 height=1, 
-                                width=5).pack(pady=5, padx=25)
+                                width=5)
+        tournament_size.pack(pady=5, padx=25)
 
         cross_methods = [
             "Pick a crossover method",
@@ -192,7 +204,21 @@ class StartPage(tk.Frame):
 
         tk.Button(self,
                 text="Calculate!",
-                command=lambda: [Calculations.run_calculations(str(selection_clicked.get())), master.switch_frame(ResultsPage)],
+                command=lambda: [Calculations.run_calculations(
+                                 range_start.get(1.0, "end-1c"), 
+                                 range_end.get(1.0, "end-1c"), 
+                                 epoch.get(1.0, "end-1c"),
+                                 elite_strategy.get(1.0, "end-1c"),
+                                 cross_probability_size.get(1.0, "end-1c"),
+                                 mutation_probability_size.get(1.0, "end-1c"),
+                                 inversion_probability_size.get(1.0, "end-1c"),
+                                 str(selection_clicked.get()), 
+                                 percent.get(1.0, "end-1c"),
+                                 tournament_size.get(1.0, "end-1c"),
+                                 str(cross_clicked.get()), 
+                                 str(mutation_clicked.get()),
+                                 bool(state.get())),
+                                 master.switch_frame(ResultsPage)],
                 bg=button_bg_colour,
                 font=('arial', 10, 'bold'),
                 borderwidth = '0',
