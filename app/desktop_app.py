@@ -35,7 +35,8 @@ class StartPage(tk.Frame):
                                  bg=background_colour,
                                  font=('arial', 10, 'bold'),
                                  borderwidth = '0',
-                                 fg="white").pack(pady=15, padx=25)
+                                 fg="white").pack(pady=5, padx=25)
+        
         range_start_label = tk.Label(self, 
                                  text="Enter range start:",                 
                                  bg=background_colour,
@@ -58,30 +59,30 @@ class StartPage(tk.Frame):
                           height=1, 
                           width=5).pack(pady=5, padx=25)
         
-        percent_label = tk.Label(self, 
-                                 text="Enter percent for select best:",                 
+        epoch_label = tk.Label(self, 
+                                 text="Enter number of epochs:",                 
                                  bg=background_colour,
                                  font=('arial', 10),
                                  borderwidth = '0',
                                  fg="white").pack(pady=5, padx=25)
 
-        percent = tk.Text(self, 
+        epoch = tk.Text(self, 
                           height=1, 
                           width=5).pack(pady=5, padx=25)
         
-        tournament_size_label = tk.Label(self, 
-                                        text="Enter tournament size",                 
+        elite_strategy_label = tk.Label(self, 
+                                        text="Enter elite strategy [%]",                 
                                         bg=background_colour,
                                         font=('arial', 10),
                                         borderwidth = '0',
                                         fg="white").pack(pady=5, padx=25)
 
-        tournament_size = tk.Text(self, 
+        elite_strategy = tk.Text(self, 
                                 height=1, 
                                 width=5).pack(pady=5, padx=25)
-
+        
         cross_probablity_label = tk.Label(self, 
-                                        text="Enter cross probability",                 
+                                        text="Enter cross probability [%]",                 
                                         bg=background_colour,
                                         font=('arial', 10),
                                         borderwidth = '0',
@@ -93,7 +94,7 @@ class StartPage(tk.Frame):
         
 
         mutation_probablity_label = tk.Label(self, 
-                                        text="Enter mutation probability",                 
+                                        text="Enter mutation probability [%]",                 
                                         bg=background_colour,
                                         font=('arial', 10),
                                         borderwidth = '0',
@@ -104,7 +105,7 @@ class StartPage(tk.Frame):
                                 width=5).pack(pady=5, padx=25)
 
         inversion_probablity_label = tk.Label(self, 
-                                        text="Enter inversion probability",                 
+                                        text="Enter inversion probability [%]",                 
                                         bg=background_colour,
                                         font=('arial', 10),
                                         borderwidth = '0',
@@ -137,6 +138,28 @@ class StartPage(tk.Frame):
         selection_drop = OptionMenu(self, 
                           selection_clicked, 
                           *selection_methods).pack(pady=5, padx=25)
+        
+        percent_label = tk.Label(self, 
+                                 text="Enter percent for select best [%]",                 
+                                 bg=background_colour,
+                                 font=('arial', 10),
+                                 borderwidth = '0',
+                                 fg="white").pack(pady=5, padx=25)
+
+        percent = tk.Text(self, 
+                          height=1, 
+                          width=5).pack(pady=5, padx=25)
+        
+        tournament_size_label = tk.Label(self, 
+                                        text="Enter tournament size",                 
+                                        bg=background_colour,
+                                        font=('arial', 10),
+                                        borderwidth = '0',
+                                        fg="white").pack(pady=5, padx=25)
+
+        tournament_size = tk.Text(self, 
+                                height=1, 
+                                width=5).pack(pady=5, padx=25)
 
         cross_methods = [
             "Pick a crossover method",
@@ -175,6 +198,14 @@ class StartPage(tk.Frame):
                 borderwidth = '0',
                 fg="white").pack(pady=5, padx=25)
         
+        tk.Button(self,
+                text="See plots",
+                command=lambda: graph_results(),
+                bg=button_bg_colour,
+                font=('arial', 10, 'bold'),
+                borderwidth='0',
+                fg="white").pack(pady=5, padx=25)
+        
 class ResultsPage(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master, bg=background_colour, borderwidth=1) 
@@ -187,7 +218,7 @@ class ResultsPage(tk.Frame):
                                  fg="white").pack(pady=15, padx=25, side='top')
 
         time_result = tk.Label(self, 
-                               text=f"Working time: {Calculations.algorithm_time} s", 
+                               text=f"Working time: {Calculations.algorithm_time}", 
                                bg=background_colour,
                                  font=('arial', 10, 'bold'),
                                  borderwidth = '0',

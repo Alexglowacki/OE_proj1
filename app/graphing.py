@@ -7,8 +7,8 @@ import tkinter as Tk
 from matplotlib.animation import FuncAnimation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-import pandas
-
+import csv
+from tkinter import filedialog
 # for black background
 # plt.style.use('dark_background')
 
@@ -20,9 +20,18 @@ def graph_results() -> None:
     """
     # TODO read from csv/json/txt - use pandas
     # csv_values = pandas.read_csv('data_file.csv')
+    file_path = filedialog.askopenfilename(defaultextension="csv")
+    print(file_path)
+
+    x_vals = []
+
+    with open(file_path, 'r') as  exportfile:
+        csvreader = csv.reader(exportfile)
+        for row in csvreader:
+            print(row)
 
     # values for first graph
-    # x_vals = []
+    # x_vals = csvreader
     x_vals = np.linspace(0, 2*np.pi, 10)
     y1_vals = np.random.randint(100, size=(10))
 
