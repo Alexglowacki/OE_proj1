@@ -8,11 +8,7 @@ import csv
 
 # add more parameters to the definitioin
 def run_calculations(method: str) -> None:
-    """_summary_
 
-    Args:
-        method (str): _description_
-    """
 
     print("Running calculations...")
     method = method.lower()
@@ -21,12 +17,17 @@ def run_calculations(method: str) -> None:
     # test value 10% best
     select_best_param = 10
 
+    roulette_status = 1
+
     start_time = datetime.now()
 
     if method == "select best":
         run_select_best(select_best_param)
     elif method == "roulette":
-        run_roulette()
+        if roulette_status == 1:
+            run_roulette(True)
+        else:
+            run_roulette(False)
     elif method == "tournament":
         run_tournament()
 
@@ -40,7 +41,7 @@ def run_select_best(percent_best):
     for i in range(10):
         print('Best')
 
-def run_roulette():
+def run_roulette(is_min: bool):
     for i in range(10):
         print('Roulette')
 

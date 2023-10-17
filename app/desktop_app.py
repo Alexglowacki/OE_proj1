@@ -186,20 +186,20 @@ class ResultsPage(tk.Frame):
                                  fg="white").pack(pady=15, padx=25, side='top')
 
         tk.Button(self,
-                text="See plots",
-                command=lambda: graph_results(),
-                bg=button_bg_colour,
-                font=('arial', 10, 'bold'),
-                borderwidth='0',
-                fg="white").pack(pady=5, padx=25)
+                    text="See plots",
+                    command=lambda: graph_results(),
+                    bg=button_bg_colour,
+                    font=('arial', 10, 'bold'),
+                    borderwidth='0',
+                    fg="white").pack(pady=5, padx=25)
         
         tk.Button(self,
-            text="OK",
-            command=lambda: master.quit(),
-            bg=button_bg_colour,
-            font=('arial', 10, 'bold'),
-            borderwidth='0',
-            fg="white").pack(pady=5, padx=25)
+                    text="OK",
+                    command=lambda: master.quit(),
+                    bg=button_bg_colour,
+                    font=('arial', 10, 'bold'),
+                    borderwidth='0',
+                    fg="white").pack(pady=5, padx=25)
         
 
 if __name__ == "__main__":
