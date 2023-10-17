@@ -12,7 +12,7 @@ import pandas
 # for black background
 # plt.style.use('dark_background')
 
-def graph_values() -> None:
+def graph_results() -> None:
     """_summary_
 
     Args:

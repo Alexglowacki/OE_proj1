@@ -2,16 +2,17 @@ import tkinter as tk
 from tkinter import *
 from tkinter.ttk import * 
 
-from graphing import graph_values
+from graphing import graph_results
 from calculate import run_calculations
 
-glob_method = ''
+background_colour = '#161b1c'
+button_bg_colour = '#20272b'
 
 class SampleApp(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
-        self.geometry('400x600')
-        self.configure(background='#161b1c')
+        self.geometry('400x1000')
+        self.configure(background=background_colour)
         self._frame = None
         self.switch_frame(StartPage)
 
@@ -26,58 +27,181 @@ class SampleApp(tk.Tk):
   
 class StartPage(tk.Frame):
     def __init__(self, master):
-        tk.Frame.__init__(self, master, bg='#161b1c', borderwidth=1)
+        tk.Frame.__init__(self, master, bg=background_colour, borderwidth=1)
 
-        methods = [
-            "Default choice",
+        window_label = tk.Label(self, 
+                                 text="Genetic algorith for optimization in Rana function",                 
+                                 bg=background_colour,
+                                 font=('arial', 10, 'bold'),
+                                 borderwidth = '0',
+                                 fg="white").pack(pady=15, padx=25)
+        range_start_label = tk.Label(self, 
+                                 text="Enter range start:",                 
+                                 bg=background_colour,
+                                 font=('arial', 10),
+                                 borderwidth = '0',
+                                 fg="white").pack(pady=5, padx=25)
+
+        range_start = tk.Text(self, 
+                          height=1, 
+                          width=5).pack(pady=5, padx=25)
+        
+        range_end_label = tk.Label(self, 
+                                 text="Enter range end",                 
+                                 bg=background_colour,
+                                 font=('arial', 10),
+                                 borderwidth = '0',
+                                 fg="white").pack(pady=5, padx=25)
+
+        range_end = tk.Text(self, 
+                          height=1, 
+                          width=5).pack(pady=5, padx=25)
+        
+        percent_label = tk.Label(self, 
+                                 text="Enter percent for select best:",                 
+                                 bg=background_colour,
+                                 font=('arial', 10),
+                                 borderwidth = '0',
+                                 fg="white").pack(pady=5, padx=25)
+
+        percent = tk.Text(self, 
+                          height=1, 
+                          width=5).pack(pady=5, padx=25)
+        
+        tournament_size_label = tk.Label(self, 
+                                        text="Enter tournament size",                 
+                                        bg=background_colour,
+                                        font=('arial', 10),
+                                        borderwidth = '0',
+                                        fg="white").pack(pady=5, padx=25)
+
+        tournament_size = tk.Text(self, 
+                                height=1, 
+                                width=5).pack(pady=5, padx=25)
+
+        cross_probablity_label = tk.Label(self, 
+                                        text="Enter cross probability",                 
+                                        bg=background_colour,
+                                        font=('arial', 10),
+                                        borderwidth = '0',
+                                        fg="white").pack(pady=5, padx=25)
+
+        cross_probablity_size = tk.Text(self, 
+                                height=1, 
+                                width=5).pack(pady=5, padx=25)
+        
+
+        mutation_probablity_label = tk.Label(self, 
+                                        text="Enter mutation probability",                 
+                                        bg=background_colour,
+                                        font=('arial', 10),
+                                        borderwidth = '0',
+                                        fg="white").pack(pady=5, padx=25)
+
+        mutation_probablity_size = tk.Text(self, 
+                                height=1, 
+                                width=5).pack(pady=5, padx=25)
+
+        inversion_probablity_label = tk.Label(self, 
+                                        text="Enter inversion probability",                 
+                                        bg=background_colour,
+                                        font=('arial', 10),
+                                        borderwidth = '0',
+                                        fg="white").pack(pady=5, padx=25)
+
+        inversion_probablity_size = tk.Text(self, 
+                                height=1, 
+                                width=5).pack(pady=5, padx=25)
+
+        # checkbox for minimalisation problem
+        roulette_checkbox = tk.Checkbutton(self, 
+                                           text="Minimalisation problem", 
+                                           bg=background_colour,
+                                           font=('arial', 10, 'bold'),
+                                           borderwidth = '0',
+                                        #    fg="white", for whatever reason this makes the checkbox unclickable
+                                           onvalue=1, 
+                                           offvalue=0).pack(pady=5, padx=25)
+
+        selection_methods = [
+            "Pick a selection method",
             "Select best",
             "Roulette",
             "Tournament",
         ]
 
-        clicked = StringVar()
-        clicked.set(methods[0])
-        print(str(clicked.get()))
+        selection_clicked = StringVar()
+        selection_clicked.set(selection_methods[0])
   
-        drop = OptionMenu(self, clicked, *methods,)
-        drop.pack()
+        selection_drop = OptionMenu(self, 
+                          selection_clicked, 
+                          *selection_methods).pack(pady=5, padx=25)
+
+        cross_methods = [
+            "Pick a crossover method",
+            "1 Point",
+            "2 Point",
+            "3 Point",
+            "Uniform"
+        ]
+
+        cross_clicked = StringVar()
+        cross_clicked.set(cross_methods[0])
+  
+        cross_drop = OptionMenu(self, 
+                          cross_clicked, 
+                          *cross_methods).pack(pady=5, padx=25)
+        
+        mutation_methods = [
+            "Pick a mutation method",
+            "Edge",
+            "1 Point",
+            "2 Point"
+        ]
+
+        mutation_clicked = StringVar()
+        mutation_clicked.set(mutation_methods[0])
+  
+        mutation_drop = OptionMenu(self, 
+                          mutation_clicked, 
+                          *mutation_methods).pack(pady=5, padx=25)
 
         tk.Button(self,
                 text="Calculate!",
-                # command=lambda: master.switch_frame(ResultsPage),
-                command=lambda: run_calculations(str(clicked.get())),
-                bg="#20272b",
+                command=lambda: [run_calculations(str(selection_clicked.get())), master.switch_frame(ResultsPage)],
+                bg=button_bg_colour,
                 font=('arial', 10, 'bold'),
                 borderwidth = '0',
                 fg="white").pack(pady=5, padx=25)
         
-        tk.Button(self,
-                text="See plots",
-                command=lambda: graph_values(),
-                bg="#20272b",
-                font=('arial', 10, 'bold'),
-                borderwidth='0',
-                fg="white").pack(side="top")
-        
-      
 class ResultsPage(tk.Frame):
     def __init__(self, master):
-        f3 = tk.Frame.__init__(self, master, bg='#161b1c')
-        tk.Label(self, text="Results").pack(side="top", fill="x", pady=100)
+        tk.Frame.__init__(self, master, bg=background_colour, borderwidth=1) 
 
-        # hardocded for testing
-        print(f"bigman{glob_method}")
-        run_calculations(method=glob_method)
+        window_label = tk.Label(self, 
+                                 text="Genetic algorith for optimization in Rana function - Results:",                 
+                                 bg=background_colour,
+                                 font=('arial', 10, 'bold'),
+                                 borderwidth = '0',
+                                 fg="white").pack(pady=15, padx=25, side='top')
 
-        # go back button
         tk.Button(self,
-                text="Go back",
-                command=lambda: master.switch_frame(StartPage),
-                bg="#20272b",
+                text="See plots",
+                command=lambda: graph_results(),
+                bg=button_bg_colour,
                 font=('arial', 10, 'bold'),
                 borderwidth='0',
-                fg="white").pack(side="bottom")  
-                
+                fg="white").pack(pady=5, padx=25)
+        
+        tk.Button(self,
+            text="OK",
+            command=lambda: master.quit(),
+            bg=button_bg_colour,
+            font=('arial', 10, 'bold'),
+            borderwidth='0',
+            fg="white").pack(pady=5, padx=25)
+        
+
 if __name__ == "__main__":
     app = SampleApp()
     app.mainloop()
