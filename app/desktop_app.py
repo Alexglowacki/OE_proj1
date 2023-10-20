@@ -85,6 +85,7 @@ class StartPage(tk.Frame):
         precision = tk.Text(self, 
                           height=1, 
                           width=5)
+        precision.pack(pady=5, padx=25)
 
         population_size_label = tk.Label(self,
                                text="Enter size of population:",
