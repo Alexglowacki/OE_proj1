@@ -12,6 +12,7 @@ class Calculations():
     def run_calculations(range_start: float, 
                          range_end: float,
                          epoch: int, 
+                         precision: int,
                          elite_strategy: float,
                          cross_probability: float,
                          mutation_probability: float,
@@ -49,6 +50,7 @@ class Calculations():
         print(f"Range start: {range_start}")
         print(f"Range end: {range_end}")
         print(f"Epoch: {epoch}")
+        print(f"Precision: {precision}")
         print(f"Elite strategy: {elite_strategy}")
         print(f"Cross probability: {cross_probability}")
         print(f"Mutation probability: {mutation_probability}")
