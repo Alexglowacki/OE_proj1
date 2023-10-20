@@ -69,10 +69,11 @@ class StartPage(tk.Frame):
                                  borderwidth = '0',
                                  fg="white").pack(pady=5, padx=25)
 
-        epoch = tk.Text(self, 
+        epoch = tk.Text(self,
                           height=1, 
                           width=5)
         epoch.pack(pady=5, padx=25)
+
 
         precision_label = tk.Label(self, 
                                  text="Enter expected precision",                 
@@ -84,7 +85,18 @@ class StartPage(tk.Frame):
         precision = tk.Text(self, 
                           height=1, 
                           width=5)
-        precision.pack(pady=5, padx=25)
+
+        population_size_label = tk.Label(self,
+                               text="Enter size of population:",
+                               bg=background_colour,
+                               font=('arial', 10),
+                               borderwidth='0',
+                               fg="white").pack(pady=5, padx=25)
+
+        population_size = tk.Text(self,
+                        height=1,
+                        width=5)
+        population_size.pack(pady=5, padx=25)
         
         elite_strategy_label = tk.Label(self, 
                                         text="Enter elite strategy [%]",                 
@@ -220,6 +232,7 @@ class StartPage(tk.Frame):
                                  range_start.get(1.0, "end-1c"), 
                                  range_end.get(1.0, "end-1c"), 
                                  epoch.get(1.0, "end-1c"),
+                                 population_size.get(1.0, "end-1c"),
                                  precision.get(1.0, "end-1c"),
                                  elite_strategy.get(1.0, "end-1c"),
                                  cross_probability_size.get(1.0, "end-1c"),

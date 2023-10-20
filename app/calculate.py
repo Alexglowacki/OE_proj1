@@ -2,16 +2,19 @@ import tkinter as tk
 from tkinter import *
 from tkinter.ttk import * 
 from tkinter import filedialog
-
 from datetime import datetime
 import csv
+from app.algorithms.population import Population
+from app.algorithms.selection import Selection
+
 
 # add more parameters to the definitioin
 class Calculations():
     algorithm_time = 0
     def run_calculations(range_start: float, 
                          range_end: float,
-                         epoch: int, 
+                         epoch: int,
+                         population_size: int,
                          precision: int,
                          elite_strategy: float,
                          cross_probability: float,
@@ -29,6 +32,8 @@ class Calculations():
             range_start (float): _description_
             range_end (float): _description_
             epoch (int): _description_
+            population_size (int): _description_
+            precision (int): _description_
             elite_strategy (float): _description_
             cross_probability (float): _description_
             mutation_probability (float): _description_
@@ -50,6 +55,7 @@ class Calculations():
         print(f"Range start: {range_start}")
         print(f"Range end: {range_end}")
         print(f"Epoch: {epoch}")
+        print(f"Population size: {population_size}")
         print(f"Precision: {precision}")
         print(f"Elite strategy: {elite_strategy}")
         print(f"Cross probability: {cross_probability}")
@@ -67,15 +73,20 @@ class Calculations():
 
         start_time = datetime.now()
 
+        # Generate and evaluate population
+        pop = Population(population_size, 2, range_start, range_end, precision)
+        p = pop.generate_population()
+        evaluated = pop.evaluate_population(p)
+
         if selection_method == "select best":
-            Calculations.run_select_best(select_best_param)
+            Calculations.run_select_best(select_best_param, p, evaluated)
         elif selection_method == "roulette":
             if roulette_status:
-                Calculations.run_roulette(True)
+                Calculations.run_roulette(True, p, evaluated, percent)
             else:
-                Calculations.run_roulette(False)
+                Calculations.run_roulette(False, p, evaluated, percent)
         elif selection_method == "tournament":
-            Calculations.run_tournament()
+            Calculations.run_tournament(p, evaluated)
 
         end_time = datetime.now()
         
@@ -84,17 +95,17 @@ class Calculations():
 
         print(Calculations.algorithm_time)
 
-    def run_select_best(percent_best):
-        for i in range(10):
-            print('Best')
+    def run_select_best(percent_best, p, evaluated):
+        pop_best = Selection('best', percent_best).select(p, evaluated)
+        return pop_best
 
-    def run_roulette(is_min: bool):
-        for i in range(10):
-            print('Roulette')
+    def run_roulette(is_min: bool, p, evaluated, percent):
+        pop_roulette = Selection('roulette_wheel', percent).select(p, evaluated)
+        return pop_roulette
 
-    def run_tournament():
-        for i in range(10):
-            print('Tournament')
+    def run_tournament(p, evaluated, percent):
+        pop_tournament = Selection('tournament', percent).select(p, evaluated)
+        return pop_tournament
 
     def export_to_csv():
         print("Exporting...")

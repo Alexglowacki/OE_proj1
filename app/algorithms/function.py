@@ -1,7 +1,7 @@
 import math
 
 
-def evaluate(point):
+def f_rana(point):
     s = 0.0
     array = []
     for i in range(len(point) - 1):
@@ -13,7 +13,3 @@ def evaluate(point):
         array.append(s)
     return array
 
-
-if __name__ == '__main__':
-    point = [20, 10]
-    print(evaluate(point))
