@@ -4,13 +4,14 @@ from tkinter.ttk import *
 from tkinter import filedialog
 from datetime import datetime
 import csv
-from app.algorithms.population import Population
-from app.algorithms.selection import Selection
+from algorithms.population import Population
+from algorithms.selection import Selection
 
 
 # add more parameters to the definitioin
 class Calculations():
     algorithm_time = 0
+    data2export = []
     def run_calculations(range_start: float, 
                          range_end: float,
                          epoch: int,
@@ -68,7 +69,6 @@ class Calculations():
         print(f"Picked mutation_method: {mutation_method}")
         print(f"Picked is min/max {roulette_status}")
 
-        # test value 10% best
         select_best_param = percent
 
         start_time = datetime.now()
@@ -79,14 +79,14 @@ class Calculations():
         evaluated = pop.evaluate_population(p)
 
         if selection_method == "select best":
-            Calculations.run_select_best(select_best_param, p, evaluated)
+            Calculations.data2export = Calculations.run_select_best(select_best_param, p, evaluated)
         elif selection_method == "roulette":
             if roulette_status:
-                Calculations.run_roulette(True, p, evaluated, percent)
+                Calculations.data2export = Calculations.run_roulette(True, p, evaluated, percent)
             else:
-                Calculations.run_roulette(False, p, evaluated, percent)
+                Calculations.data2export = Calculations.run_roulette(False, p, evaluated, percent)
         elif selection_method == "tournament":
-            Calculations.run_tournament(p, evaluated)
+            Calculations.data2export = Calculations.run_tournament(p, evaluated)
 
         end_time = datetime.now()
         
@@ -113,18 +113,17 @@ class Calculations():
         print(file_path)
 
         # header - always the same?
-        header = ["#", "Val1", "Val2", "Val3", "Val4"]
+        header = ["#", "Val1", "Avg", "Dev"]
 
         # calculations results
-        data = [1, 0.1, 0.1, 0.1, 0.1]
+        data = Calculations.data2export
 
         with open(file_path, 'w') as  exportfile:
             csvwriter = csv.writer(exportfile)
             csvwriter.writerow(header)
 
-            for i in range(10):
-                csvwriter.writerow(data)
-
-            # for iterable like list use .writerows()
+            for row in data:
+                csvwriter.writerow(row)
+                # for iterable like list use .writerows()
 
             

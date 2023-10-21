@@ -1,4 +1,4 @@
-from app.algorithms.population import *
+from algorithms.population import *
 
 
 def new_pop_from_indexes(pop, indexes):

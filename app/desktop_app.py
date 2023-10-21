@@ -30,6 +30,9 @@ class StartPage(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master, bg=background_colour, borderwidth=1)
 
+        scrollbar = Scrollbar(self)
+        scrollbar.pack(side='right',fill=Y)
+
         window_label = tk.Label(self, 
                                  text="Genetic algorith for optimization in Rana function",                 
                                  bg=background_colour,
@@ -37,6 +40,7 @@ class StartPage(tk.Frame):
                                  borderwidth = '0',
                                  fg="white").pack(pady=5, padx=25)
         
+
         range_start_label = tk.Label(self, 
                                  text="Enter range start:",                 
                                  bg=background_colour,

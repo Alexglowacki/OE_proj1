@@ -1,4 +1,4 @@
-from app.algorithms.selection import *
+from algorithms.selection import *
 
 if __name__ == '__main__':
     # function

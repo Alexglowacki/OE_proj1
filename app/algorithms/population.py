@@ -1,5 +1,5 @@
 import numpy as np
-from app.algorithms.function import f_rana
+from algorithms.function import f_rana
 
 
 class Population:

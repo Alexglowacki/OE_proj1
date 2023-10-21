@@ -9,6 +9,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 import csv
 from tkinter import filedialog
+
+import pandas as pd
 # for black background
 # plt.style.use('dark_background')
 
@@ -25,21 +27,12 @@ def graph_results() -> None:
 
     x_vals = []
 
-    with open(file_path, 'r') as  exportfile:
-        csvreader = csv.reader(exportfile)
-        for row in csvreader:
-            print(row)
+    data = pd.read_csv(file_path)
+    x_vals = data['#']
 
-    # values for first graph
-    # x_vals = csvreader
-    x_vals = np.linspace(0, 2*np.pi, 10)
-    y1_vals = np.random.randint(100, size=(10))
-
-    # values for second graph
-    y2_vals = np.random.randint(100, size=(10))
-
-    # values for second graph
-    y3_vals = np.random.randint(100, size=(10))
+    y1_vals = data['Val1']
+    y2_vals = data['Avg']
+    y3_vals = data['Dev']
     
     # creating 3 subplots - wartosc funkcji od kolejnej iteracji,
     # sredniej wartosci funkcji i odchylenia
