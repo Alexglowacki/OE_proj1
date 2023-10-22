@@ -5,21 +5,17 @@ from app.extensions import config
 
 class Button(tk.Button):
 
-    def __init__(self, parent, name):
-        # self.string_var = tk.StringVar()
-        # self.string_var.trace('w', self.callback)
+    def __init__(self, parent, name, callback):
         super().__init__(
             parent,
+            text=name,
             font=('Helvetica', 10),
-            text='Click',
-            bg=config.get('color', 'secondary'),
-            fg=config.get('color', 'text'),
-            highlightthickness=0.5,
+            pady=4,
+            background=config.get('color', 'secondary'),
+            foreground=config.get('color', 'text'),
+            activebackground=config.get('color', 'tertiary'),
+            activeforeground=config.get('color', 'text'),
+            command=callback
         )
-        self.name = name
 
-        self.pack(ipady=2, fill=tk.X)
-
-    def callback(self, *args):
-        config.set('buttons', self.name)
-        print(config.get('buttons', self.name))
+        self.pack(fill=tk.X)

@@ -7,6 +7,7 @@ class Entry(tk.Entry):
 
     def __init__(self, parent, name):
         self.string_var = tk.StringVar()
+        self.string_var.set(config.get('entries', name))
         self.string_var.trace('w', self.callback)
         super().__init__(
             parent,
@@ -23,4 +24,3 @@ class Entry(tk.Entry):
 
     def callback(self, *args):
         config.set('entries', self.name, self.string_var.get())
-        print(config.get('entries', self.name))

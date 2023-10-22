@@ -3,7 +3,9 @@ import tkinter as tk
 from app.extensions import config
 from app.libs.UI.entry_row import EntryRow
 from app.libs.UI.option_row import OptionRow
-from app.libs.UI.button_row import ButtonRow
+from app.libs.UI.checkbox import Checkbox
+from app.libs.UI.button import Button
+from app.libs.UI.result_window import ResultWindow
 
 
 class Window(tk.Tk):
@@ -16,11 +18,19 @@ class Window(tk.Tk):
         self.minsize(config.get('window', 'width'), config.get('window', 'height'))
         self.configure(background=config.get('color', 'primary'), padx=30, pady=20)
 
-        for row in dict(config.items('entries')):
-            EntryRow(self, row)
+        for section in config.sections():
+            if section.startswith('entries'):
+                for entry in config.options(section):
+                    EntryRow(self, entry)
+            if section.startswith('options'):
+                OptionRow(self, section)
+            if section.startswith('checkboxes'):
+                for checkbox in config.options(section):
+                    Checkbox(self, checkbox)
 
-        for row in config.get('options', 'options').split(','):
-            OptionRow(self, row)
+        Button(self, 'Submit', self.open)
 
-        for row in dict(config.items('buttons')):
-            ButtonRow(self, row)
+    def open(self):
+        self.destroy()
+
+        ResultWindow()
