@@ -3,6 +3,7 @@ import tkinter as tk
 from app.extensions import config
 from app.libs.UI.entry_row import EntryRow
 from app.libs.UI.option_row import OptionRow
+from app.libs.UI.button_row import ButtonRow
 
 
 class Window(tk.Tk):
@@ -20,3 +21,6 @@ class Window(tk.Tk):
 
         for row in config.get('options', 'options').split(','):
             OptionRow(self, row)
+
+        for row in dict(config.items('buttons')):
+            ButtonRow(self, row)
