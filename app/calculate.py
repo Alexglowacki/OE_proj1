@@ -6,12 +6,14 @@ from datetime import datetime
 import csv
 from algorithms.population import Population
 from algorithms.selection import Selection
+from algorithms.crossover import Crossover
 
 
 # add more parameters to the definitioin
 class Calculations():
     algorithm_time = 0
     data2export = []
+    dummy = 0 # placeholder for uniform crossover
     def run_calculations(range_start: float, 
                          range_end: float,
                          epoch: int,
@@ -88,6 +90,15 @@ class Calculations():
         elif selection_method == "tournament":
             Calculations.data2export = Calculations.run_tournament(p, evaluated)
 
+        if cross_method == "one-point":
+            Calculations.data2export = Calculations.run_k_point(prob, evaluated, 1)
+        elif cross_method == "two-point":
+            Calculations.data2export = Calculations.run_k_point(prob, evaluated, 2)
+        elif cross_method == "k-point":
+            Calculations.data2export = Calculations.run_k_point(prob, evaluated, k)
+        elif cross_method == "uniform":
+            Calculations.data2export = Calculations.run_uniform(prob, evaluated)
+
         end_time = datetime.now()
         
         Calculations.algorithm_time = end_time - start_time
@@ -106,6 +117,14 @@ class Calculations():
     def run_tournament(p, evaluated, percent):
         pop_tournament = Selection('tournament', percent).select(p, evaluated)
         return pop_tournament
+
+    def run_k_point(prob, pop, k)
+        cross_k = Crossover('k-point', prob).select(pop, k, prob)
+        return cross_k
+
+    def run_uniform(prob, pop):
+        cross_uniform = Crossover('uniform', prob).select(pop, dummy, prob)
+        return cross_uniform
 
     def export_to_csv():
         print("Exporting...")
