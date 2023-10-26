@@ -8,28 +8,19 @@ class Inversion:
     def inversion(self, offspring_crossover, percentage):
 
         if Inversion.check_percentage(percentage):
-            inversion_offspring = []
+            random_idx_in_bin_start = random.randint(0, len(offspring_crossover) - 1)
+            random_idx_in_bin_end = random.randint(0, len(offspring_crossover) - 1)
 
-            for gene in offspring_crossover:
-                random_idx_in_bin_start = random.randint(0, len(gene) - 1)
-                random_idx_in_bin_end = random.randint(0, len(gene) - 1)
+            if random_idx_in_bin_start > random_idx_in_bin_end:
+                temp = random_idx_in_bin_end
+                random_idx_in_bin_end = random_idx_in_bin_start
+                random_idx_in_bin_start = temp
 
-                gene = list(gene)
+            strip = offspring_crossover[random_idx_in_bin_start:random_idx_in_bin_end]
 
-                if random_idx_in_bin_start > random_idx_in_bin_end:
-                    temp = random_idx_in_bin_end
-                    random_idx_in_bin_end = random_idx_in_bin_start
-                    random_idx_in_bin_start = temp
+            reversed_strip = strip[::-1]
 
-                strip = gene[random_idx_in_bin_start:random_idx_in_bin_end]
-
-                reversed_strip = strip[::-1]
-
-                gene[random_idx_in_bin_start:random_idx_in_bin_end] = reversed_strip
-                gene = ''.join(gene)
-                inversion_offspring.append(gene)
-
-            offspring_crossover = np.array(inversion_offspring)
+            offspring_crossover[random_idx_in_bin_start:random_idx_in_bin_end] = reversed_strip
 
         return offspring_crossover
     

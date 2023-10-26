@@ -138,19 +138,19 @@ class Calculations:
         return cross_uniform
     
     def run_one_point(probability, pop):
-        mutation_one_point = Mutation('one point').select(pop, probability)
+        mutation_one_point = Mutation('one point', probability).select(pop, probability)
         return mutation_one_point
     
     def run_two_point(probability, pop):
-        mutation_two_point = Mutation('two point').select(pop, probability)
+        mutation_two_point = Mutation('two point', probability).select(pop, probability)
         return mutation_two_point
     
     def run_edge(probability, pop):
-        mutation_edge = Mutation('edge').select(pop, probability)
+        mutation_edge = Mutation('edge', probability).select(pop, probability)
         return mutation_edge
     
     def run_inversion(probablity, pop):
-        inversion_result = Inversion.inversion(pop, probablity)
+        inversion_result = Inversion(probablity).inversion(pop, probablity)
         return inversion_result
 
     def export_to_csv():
