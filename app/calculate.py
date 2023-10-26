@@ -4,11 +4,11 @@ from tkinter.ttk import *
 from tkinter import filedialog
 from datetime import datetime
 import csv
-from algorithms.population import Population
-from algorithms.selection import Selection
-from algorithms.crossover import Crossover
-from algorithms.mutation import Mutation
-from algorithms.inversion import Inversion
+from app.algorithms.population import Population
+from app.algorithms.selection import Selection
+from app.algorithms.crossover import Crossover
+from app.algorithms.mutation import Mutation
+from app.algorithms.inversion import Inversion
 
 
 # add more parameters to the definitioin
@@ -16,11 +16,11 @@ class Calculations:
     algorithm_time = 0
     data2export = []
     dummy = 0 # placeholder for uniform crossover
-    def run_calculations(range_start: float, 
-                         range_end: float,
+    def run_calculations(range_start: int, 
+                         range_end: int,
                          epoch: int,
                          population_size: int,
-                         precision: int,
+                         precision: float,
                          elite_strategy: float,
                          cross_probability: float,
                          mutation_probability: float,

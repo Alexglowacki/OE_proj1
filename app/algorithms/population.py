@@ -1,5 +1,5 @@
 import numpy as np
-from algorithms.function import f_rana
+from app.algorithms.function import f_rana
 
 
 class Population:
@@ -40,3 +40,4 @@ class Population:
     def evaluate_population(self, population):
         population = self.decode_population(population)
         return np.array([f_rana(r) for r in population]).flatten()
+
