@@ -28,7 +28,7 @@ def graph_results() -> None:
     x_vals = []
 
     data = pd.read_csv(file_path)
-    x_vals = data['#']
+    x_vals = np.linspace(0, len(data['Val1']))
 
     y1_vals = data['Val1']
     y2_vals = data['Avg']

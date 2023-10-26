@@ -12,7 +12,7 @@ from algorithms.inversion import Inversion
 
 
 # add more parameters to the definitioin
-class Calculations():
+class Calculations:
     algorithm_time = 0
     data2export = []
     dummy = 0 # placeholder for uniform crossover
@@ -134,7 +134,7 @@ class Calculations():
         return cross_k
 
     def run_uniform(prob, pop):
-        cross_uniform = Crossover('uniform', prob).select(pop, dummy, prob)
+        cross_uniform = Crossover('uniform', prob).select(pop, prob)
         return cross_uniform
     
     def run_one_point(probability, pop):
@@ -158,8 +158,7 @@ class Calculations():
         file_path = filedialog.askopenfilename(defaultextension="csv")
         print(file_path)
 
-        # header - always the same?
-        header = ["#", "Val1", "Avg", "Dev"]
+        header = ["Val1", "Avg", "Dev"]
 
         # calculations results
         data = Calculations.data2export

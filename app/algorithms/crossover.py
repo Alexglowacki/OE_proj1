@@ -1,6 +1,6 @@
 import numpy as np
 
-class Selection:
+class Crossover:
     def __init__(self, decision, probability):
         self.probability = probability
         self.decision = decision
