@@ -5,7 +5,7 @@ class Inversion:
     def __init__(self, percentage):
         self.percentage = percentage
 
-    def inversion(offspring_crossover, percentage):
+    def inversion(self, offspring_crossover, percentage):
 
         if Inversion.check_percentage(percentage):
             inversion_offspring = []
@@ -39,11 +39,3 @@ class Inversion:
             return True
         else:
             return False
-
-if __name__ == "__main__":
-
-    bin_repr_inv = ["10110011111111111111", "01010100100000000000"]
-    offspring_crossover = np.array(bin_repr_inv)
-
-    inversion_result = Inversion.inversion(offspring_crossover, 20)
-    print(f"inversion_result = {inversion_result}")

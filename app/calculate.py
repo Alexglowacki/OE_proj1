@@ -7,6 +7,8 @@ import csv
 from algorithms.population import Population
 from algorithms.selection import Selection
 from algorithms.crossover import Crossover
+from algorithms.mutation import Mutation
+from algorithms.inversion import Inversion
 
 
 # add more parameters to the definitioin
@@ -91,13 +93,22 @@ class Calculations():
             Calculations.data2export = Calculations.run_tournament(p, evaluated)
 
         if cross_method == "one-point":
-            Calculations.data2export = Calculations.run_k_point(prob, evaluated, 1)
+            Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 1)
         elif cross_method == "two-point":
-            Calculations.data2export = Calculations.run_k_point(prob, evaluated, 2)
+            Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 2)
         elif cross_method == "k-point":
-            Calculations.data2export = Calculations.run_k_point(prob, evaluated, k)
+            Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, k)
         elif cross_method == "uniform":
-            Calculations.data2export = Calculations.run_uniform(prob, evaluated)
+            Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated)
+
+        if mutation_method == "one point":
+            Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
+        elif mutation_method == "two point":
+            Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated)
+        elif mutation_method == "edge":
+            Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated)
+
+        Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
 
         end_time = datetime.now()
         
@@ -118,13 +129,29 @@ class Calculations():
         pop_tournament = Selection('tournament', percent).select(p, evaluated)
         return pop_tournament
 
-    def run_k_point(prob, pop, k)
+    def run_k_point(prob, pop, k):
         cross_k = Crossover('k-point', prob).select(pop, k, prob)
         return cross_k
 
     def run_uniform(prob, pop):
         cross_uniform = Crossover('uniform', prob).select(pop, dummy, prob)
         return cross_uniform
+    
+    def run_one_point(probability, pop):
+        mutation_one_point = Mutation('one point').select(pop, probability)
+        return mutation_one_point
+    
+    def run_two_point(probability, pop):
+        mutation_two_point = Mutation('two point').select(pop, probability)
+        return mutation_two_point
+    
+    def run_edge(probability, pop):
+        mutation_edge = Mutation('edge').select(pop, probability)
+        return mutation_edge
+    
+    def run_inversion(probablity, pop):
+        inversion_result = Inversion.inversion(pop, probablity)
+        return inversion_result
 
     def export_to_csv():
         print("Exporting...")

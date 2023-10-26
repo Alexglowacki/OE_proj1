@@ -6,17 +6,17 @@ class Mutation:
         self.percentage = percentage
         self.decision = decision
 
-    def select(self, evaluated_pop):
+    def select(self, evaluated_pop, percentage):
         if self.decision == 'one point':
-            return self.mutation_one_point(evaluated_pop)
+            return self.mutation_one_point(evaluated_pop, percentage)
         if self.decision == 'two point':
-            return self.mutation_two_point(evaluated_pop)
+            return self.mutation_two_point(evaluated_pop, percentage)
         if self.decision == 'edge':
-            return self.mutation_edge(evaluated_pop)
+            return self.mutation_edge(evaluated_pop, percentage)
         else:
-            raise NameError("Not a type of selection")
+            raise NameError("Not a type of mutation")
 
-    def mutation_one_point(offspring_crossover, percentage):
+    def mutation_one_point(self, offspring_crossover, percentage):
 
         if Mutation.check_percentage(percentage):
 
@@ -40,7 +40,7 @@ class Mutation:
         
         return offspring_crossover
 
-    def mutation_edge(offspring_crossover, percentage):
+    def mutation_edge(self, offspring_crossover, percentage):
 
         if Mutation.check_percentage(percentage):
 
@@ -62,7 +62,7 @@ class Mutation:
 
         return offspring_crossover
 
-    def mutation_two_point(offspring_crossover, percentage):
+    def mutation_two_point(self, offspring_crossover, percentage):
 
         if Mutation.check_percentage(percentage):
 
@@ -99,16 +99,3 @@ class Mutation:
             return True
         else:
             return False
-
-if __name__ == "__main__":
-    bin_repr = ["11111111111111111111", "00000000000000000000"]
-    offspring_crossover = np.array(bin_repr)
-
-    mutation_result = Mutation.mutation_edge(offspring_crossover, 20)
-    print(f"edge = {mutation_result}")
-
-    mutation_result = Mutation.mutation_one_point(offspring_crossover, 20)
-    print(f"mutation one point = {mutation_result}")
-
-    mutation_result = Mutation.mutation_two_point(offspring_crossover, 20)
-    print(f"mutation two point = {mutation_result}")
