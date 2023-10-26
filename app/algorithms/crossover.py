@@ -10,8 +10,8 @@ class Crossover:
             return self.k_point(evaluated_pop, 1, probability)
         elif self.decision == "two-point":
             return self.k_point(evaluated_pop, 2, probability)
-        elif self.decision == "k-point":
-            return self.k_point(evaluated_pop, k, probability)
+        elif self.decision == "three-point":
+            return self.k_point(evaluated_pop, 3, probability)
         elif self.decision == "uniform":
             return self.uniform(evaluated_pop, probability)
         else:

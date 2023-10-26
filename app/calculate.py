@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter.ttk import * 
 from tkinter import filedialog
 from datetime import datetime
+import numpy as np
 import csv
 from app.algorithms.population import Population
 from app.algorithms.selection import Selection
@@ -96,8 +97,8 @@ class Calculations:
             Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 1)
         elif cross_method == "two-point":
             Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 2)
-        elif cross_method == "k-point":
-            Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, k)
+        elif cross_method == "three-point":
+            Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 3)
         elif cross_method == "uniform":
             Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated)
 
@@ -161,14 +162,16 @@ class Calculations:
         header = ["Val1", "Avg", "Dev"]
 
         # calculations results
-        data = Calculations.data2export
+        data = np.transpose(np.array(Calculations.data2export))
+        data = np.insert(data, 0, header, axis=1)
 
-        with open(file_path, 'w') as  exportfile:
+
+        # export to csv
+        with open(file_path, 'w') as exportfile:
             csvwriter = csv.writer(exportfile)
             csvwriter.writerow(header)
 
             for row in data:
-                csvwriter.writerow(row)
-                # for iterable like list use .writerows()
+                csvwriter.writerows(row)
 
-            
+                print("Exported")

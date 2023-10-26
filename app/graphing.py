@@ -27,7 +27,7 @@ def graph_results() -> None:
 
     x_vals = []
 
-    data = pd.read_csv(file_path)
+    data = pd.read_csv(file_path, delimiter="," header=0)
     x_vals = np.linspace(0, len(data['Val1']))
 
     y1_vals = data['Val1']
@@ -57,4 +57,45 @@ def graph_results() -> None:
     ax2.grid(color='gray', linestyle='--', linewidth=0.5)
     ax3.grid(color='gray', linestyle='--', linewidth=0.5)
 
+    plt.show()
+
+
+def get_data() -> None:
+    file_path = filedialog.askopenfilename(defaultextension="csv")
+    print(file_path)
+
+    x_vals = []
+
+    data = pd.read_csv(file_path, delimiter="\", header=None, names=['Val1', 'Avg', 'Dev']
+    x_vals = np.linspace(0, len(data['Val1']))
+
+    y1_vals = data['Val1']
+    y2_vals = data['Avg']
+    y3_vals = data['Dev']
+
+def Function_value_plot() -> None:
+
+    ax.set_title('Function value')
+    ax.plot(x_vals, y1_vals)
+    ax.set_xlabel("Iterations")
+
+    ax.grid(color='gray', linestyle='--', linewidth=0.5)
+    plt.show()
+
+def Average_value_plot() -> None:
+
+    ax.set_title('Avg. value')
+    ax.plot(x_vals, y2_vals)
+    ax.set_xlabel("Iterations")
+
+    ax.grid(color='gray', linestyle='--', linewidth=0.5)
+    plt.show()
+
+def Standard_deviation_plot() -> None:
+
+    ax.set_title('Std. deviation')
+    ax.plot(x_vals, y3_vals)
+    ax.set_xlabel("Iterations")
+
+    ax.grid(color='gray', linestyle='--', linewidth=0.5)
     plt.show()
