@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter.ttk import * 
 from tkinter import filedialog
 from datetime import datetime
+import pandas as pd
 import numpy as np
 import csv
 from app.algorithms.population import Population
@@ -162,16 +163,28 @@ class Calculations:
         header = ["Val1", "Avg", "Dev"]
 
         # calculations results
-        data = np.transpose(np.array(Calculations.data2export))
-        data = np.insert(data, 0, header, axis=1)
+        data = np.array(Calculations.data2export)
+        data = np.reshape(data, (data.shape[0], ))
+        numbers_series = pd.Series(data)
+        data = np.reshape(data, (data.shape[0], 1))
 
+        data_avg = numbers_series.rolling(2).mean()
+        data_avg = data_avg.to_numpy()
+        data_avg = np.reshape(data_avg, (data.shape[0], 1))
+
+        data_std = numbers_series.rolling(2).std()
+        data_std = data_std.to_numpy()
+        data_std = np.reshape(data_std, (data.shape[0], 1))
+
+        data = np.concatenate((data, data_avg), axis=1)
+        data = np.concatenate((data, data_std), axis=1)
+        print(data)
 
         # export to csv
         with open(file_path, 'w') as exportfile:
             csvwriter = csv.writer(exportfile)
             csvwriter.writerow(header)
+            csvwriter.writerows(data)
 
-            for row in data:
-                csvwriter.writerows(row)
+            print("Exported")
 
-                print("Exported")
