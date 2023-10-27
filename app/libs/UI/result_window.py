@@ -1,4 +1,5 @@
 import tkinter as tk
+from app.algorithms.function import f_rana
 
 from app.extensions import config
 from app.libs.UI.button import Button
@@ -28,7 +29,7 @@ class ResultWindow(tk.Tk):
 
     def calculate(self):
         self.add_label(f'Result found in {Calculations.algorithm_time} seconds')
-        self.add_label(f'f(0, 10) = 10')
+        self.add_label(f'f(0, 10) = {f_rana([0, 10])}')
 
     def add_label(self, text):
         tk.Label(
