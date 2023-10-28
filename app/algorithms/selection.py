@@ -6,9 +6,10 @@ def new_pop_from_indexes(pop, indexes):
 
 
 class Selection:
-    def __init__(self, decision, percentage):
+    def __init__(self, decision, percentage, tournament_size):
         self.percentage = percentage
         self.decision = decision
+        self.tournament_size = tournament_size
 
     def select(self, pop, evaluated_pop):
         if self.decision == 'best':
@@ -58,12 +59,13 @@ class Selection:
 
     def tournament(self, pop, evaluated_pop):
         pop_size = pop.shape[0]
-        k = pop_size // (int(self.percentage * pop_size))
+        # k = pop_size // (int(self.percentage * pop_size))
+        k = self.tournament_size
         not_selected_indexes = [i for i in range(pop_size)]
 
         selected_indexes = np.array([i for i in range(len(evaluated_pop))])
         np.random.shuffle(selected_indexes)
-        selected_indexes = np.array_split(selected_indexes, int(len(evaluated_pop) / 3))
+        selected_indexes = np.array_split(selected_indexes, int(len(evaluated_pop) / k))
 
         selected_indexes = list(map(lambda x: min(x, key=lambda y: evaluated_pop[y]), selected_indexes))
         selected = new_pop_from_indexes(pop, selected_indexes)

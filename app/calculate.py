@@ -29,7 +29,7 @@ class Calculations:
                          inversion_probability: float, 
                          selection_method: str,
                          percent: float,
-                         tournament: float,
+                         tournament: int,
                          cross_method: str,
                          mutation_method: str,
                          roulette_status: bool) -> None:
@@ -92,7 +92,7 @@ class Calculations:
             else:
                 Calculations.data2export = Calculations.run_roulette(False, p, evaluated, percent)
         elif selection_method == "tournament":
-            Calculations.data2export = Calculations.run_tournament(p, evaluated, percent)
+            Calculations.data2export = Calculations.run_tournament(p, evaluated, percent, tournament)
 
         if cross_method == "one-point":
             Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 1)
@@ -127,8 +127,8 @@ class Calculations:
         pop_roulette = Selection('roulette_wheel', percent).select(p, evaluated)
         return pop_roulette
 
-    def run_tournament(p, evaluated, percent):
-        pop_tournament = Selection('tournament', percent).select(p, evaluated)
+    def run_tournament(p, evaluated, percent, tournament_size):
+        pop_tournament = Selection('tournament', percent, tournament_size).select(p, evaluated)
         return pop_tournament
 
     def run_k_point(prob, pop, k):
