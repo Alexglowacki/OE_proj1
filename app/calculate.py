@@ -101,7 +101,7 @@ class Calculations:
         elif cross_method == "three-point":
             Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 3)
         elif cross_method == "uniform":
-            Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated)
+            Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated, percent)
 
         if mutation_method == "one point":
             Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
@@ -111,6 +111,8 @@ class Calculations:
             Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated)
 
         Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
+
+        Calculations.data2export = Calculations.run_elitism(elite_strategy, evaluated)
 
         end_time = datetime.now()
         
@@ -154,6 +156,10 @@ class Calculations:
     def run_inversion(probablity, pop):
         inversion_result = Inversion(probablity).inversion(pop, probablity)
         return inversion_result
+
+    def run_elitism(elite_strategy, pop):
+        elite_result = Elite(elite_strategy).elitism(pop, elite_strategy)
+        return elite_result
 
     def export_to_csv():
         print("Exporting...")

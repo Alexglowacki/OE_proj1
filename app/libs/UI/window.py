@@ -32,7 +32,7 @@ class Window(tk.Tk):
         Button(self, 'Submit', self.open)
 
     def open(self):
-        self.destroy()
+#        self.destroy()
         Calculations.run_calculations(
             range_start=int(config.get('entries', 'start range')),
             range_end=int(config.get('entries', 'end range')),
