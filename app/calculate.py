@@ -92,7 +92,7 @@ class Calculations:
             else:
                 Calculations.data2export = Calculations.run_roulette(False, p, evaluated, percent)
         elif selection_method == "tournament":
-            Calculations.data2export = Calculations.run_tournament(p, evaluated)
+            Calculations.data2export = Calculations.run_tournament(p, evaluated, percent)
 
         if cross_method == "one-point":
             Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 1)

@@ -63,7 +63,7 @@ class Selection:
 
         selected_indexes = np.array([i for i in range(len(evaluated_pop))])
         np.random.shuffle(selected_indexes)
-        selected_indexes = np.array_split(selected_indexes, int(len(evaluated_pop) / k))
+        selected_indexes = np.array_split(selected_indexes, int(len(evaluated_pop) / 3))
 
         selected_indexes = list(map(lambda x: min(x, key=lambda y: evaluated_pop[y]), selected_indexes))
         selected = new_pop_from_indexes(pop, selected_indexes)
