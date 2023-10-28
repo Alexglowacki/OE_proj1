@@ -17,6 +17,8 @@ from app.algorithms.inversion import Inversion
 class Calculations:
     algorithm_time = 0
     data2export = []
+    roulette_status = False
+    p = []
     dummy = 0 # placeholder for uniform crossover
     def run_calculations(range_start: int, 
                          range_end: int,

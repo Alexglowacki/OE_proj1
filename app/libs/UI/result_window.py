@@ -1,11 +1,11 @@
 import tkinter as tk
 from app.algorithms.function import f_rana
+from app.algorithms.population import Population
 
 from app.extensions import config
 from app.libs.UI.button import Button
 from app.calculate import Calculations
 from app.graphing import Graphing
-
 
 class ResultWindow(tk.Tk):
 
@@ -29,7 +29,12 @@ class ResultWindow(tk.Tk):
 
     def calculate(self):
         self.add_label(f'Result found in {Calculations.algorithm_time} seconds')
-        self.add_label(f'f(0, 10) = {f_rana([0, 10])}')
+        if Calculations.roulette_status:
+            self.add_label(f'Results:\n y = {max(Calculations.data2export)}\n x1 = {Calculations.p} \n x2 = {Calculations.p}')
+        else:
+            self.add_label(f'Results:\n y = {min(Calculations.data2export)}\n x1 = {Calculations.p} \n x2 = {Calculations.p}')
+        self.add_label(f'Ideal result = {f_rana([-488.662570, 512.0])}')
+
 
     def add_label(self, text):
         tk.Label(
