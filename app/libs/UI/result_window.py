@@ -29,11 +29,17 @@ class ResultWindow(tk.Tk):
 
     def calculate(self):
         self.add_label(f'Result found in {Calculations.algorithm_time} seconds')
-        if Calculations.roulette_status:
-            self.add_label(f'Results:\n y = {max(Calculations.data2export)}\n x1 = {Calculations.p} \n x2 = {Calculations.p}')
+        if (Calculations.roulette_status_val == "1" and Calculations.selection_method == "roulette"):
+            self.add_label(f'Results:\n y = {max(Calculations.data2export)}')
+            self.add_label(f'Ideal result = {f_rana([-488.662570, 512.0])}')
+
+        elif (Calculations.roulette_status_val == "0" and Calculations.selection_method == "roulette"):
+            self.add_label(f'Results:\n y = {min(Calculations.data2export)}')
+            self.add_label(f'Ideal result = {1/(f_rana([-488.662570, 512.0])[0])}')
+            
         else:
-            self.add_label(f'Results:\n y = {min(Calculations.data2export)}\n x1 = {Calculations.p} \n x2 = {Calculations.p}')
-        self.add_label(f'Ideal result = {f_rana([-488.662570, 512.0])}')
+            self.add_label(f'Results:\n y = {min(Calculations.data2export)}')
+            self.add_label(f'Ideal result = {f_rana([-488.662570, 512.0])}')
 
 
     def add_label(self, text):

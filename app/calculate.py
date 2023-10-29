@@ -19,25 +19,27 @@ from app.algorithms.inversion import Inversion
 class Calculations:
     algorithm_time = 0
     data2export = []
-    roulette_status = False
-    p = []
-    dummy = 0 # placeholder for uniform crossover
+    result_coords = {"y": [], "x1": [], "x2": []}
+    roulette_status_val = "0"
+    selection_method = ''
+
     def run_calculations(range_start: int, 
                          range_end: int,
                          epoch: int,
                          population_size: int,
                          precision: float,
-                         elite_strategy: float,
-                         cross_probability: float,
-                         mutation_probability: float,
-                         inversion_probability: float, 
+                         elite_strategy: int,
+                         variable_number: int, 
+                         cross_probability: int,
+                         mutation_probability: int,
+                         inversion_probability: int, 
                          selection_method: str,
                          percent: float,
                          tournament: int,
                          cross_method: str,
                          mutation_method: str,
-                         roulette_status: int,
-                         real: int) -> None:
+                         roulette_status: str,
+                         real: str) -> None:
         """_summary_
 
         Args:
@@ -57,9 +59,9 @@ class Calculations:
             mutation_method (str): _description_
             roulette_status (bool, optional): _description_. Defaults to False.
         """
-
+        Calculations.roulette_status_val = roulette_status
         print("Running calculations...")
-        selection_method = selection_method.lower()
+        Calculations.selection_method = selection_method.lower()
         cross_method = cross_method.lower()
         mutation_method = mutation_method.lower()
 
@@ -70,6 +72,7 @@ class Calculations:
         print(f"Population size: {population_size}")
         print(f"Precision: {precision}")
         print(f"Elite strategy: {elite_strategy}")
+        print(f"Variable number: {variable_number}")
         print(f"Cross probability: {cross_probability}")
         print(f"Mutation probability: {mutation_probability}")
         print(f"Inversion probability: {inversion_probability}")
@@ -94,22 +97,20 @@ class Calculations:
         # evaluated - dziesietna
         evaluated = pop.evaluate_population(p)
         
-        if real == 1:
+        if real == "1":
             for _ in range(epoch):
 
                 selected, not_selected = Calculations.run_elitism(elite_strategy, evaluated)
                 evaluated = not_selected
-                print(selected)
-                print(not_selected)
 
-                if selection_method == "select best":
+                if Calculations.selection_method == "select best":
                     Calculations.data2export = Calculations.run_select_best(select_best_param, p, evaluated)
-                elif selection_method == "roulette":
-                    if roulette_status:
+                elif Calculations.selection_method == "roulette":
+                    if roulette_status == 1:
                         Calculations.data2export = Calculations.run_roulette(True, p, evaluated, percent)
                     else:
                         Calculations.data2export = Calculations.run_roulette(False, p, evaluated, percent)
-                elif selection_method == "tournament":
+                elif Calculations.selection_method == "tournament":
                     Calculations.data2export = Calculations.run_tournament(p, evaluated, percent, tournament)
 
                 if cross_method == "one-point":
@@ -136,14 +137,16 @@ class Calculations:
                 selected, not_selected = Calculations.run_elitism(elite_strategy, p)
                 evaluated = not_selected
 
-                if selection_method == "select best":
+                evaluated = p
+
+                if Calculations.selection_method == "select best":
                     Calculations.data2export = Calculations.run_select_best(select_best_param, p, evaluated)
-                elif selection_method == "roulette":
-                    if roulette_status:
+                elif Calculations.selection_method == "roulette":
+                    if roulette_status == "1":
                         Calculations.data2export = Calculations.run_roulette(True, p, evaluated, percent)
                     else:
                         Calculations.data2export = Calculations.run_roulette(False, p, evaluated, percent)
-                elif selection_method == "tournament":
+                elif Calculations.selection_method == "tournament":
                     Calculations.data2export = Calculations.run_tournament(p, evaluated, percent, tournament)
 
                 if cross_method == "one-point":
@@ -163,7 +166,7 @@ class Calculations:
                     Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated)
 
                 Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
-                evaluated = np.concatenate((selected, evaluated))
+                # evaluated = np.concatenate((selected, evaluated))
 
         end_time = datetime.now()
         
