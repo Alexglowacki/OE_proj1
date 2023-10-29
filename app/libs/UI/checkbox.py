@@ -29,4 +29,4 @@ class Checkbox(tk.Checkbutton):
         self.pack(fill=tk.X)
 
     def callback(self, *args):
-        config.set('checkboxes', self.name, str(self.intVar.get()))
+        config.set('checkboxes', self.name, self.intVar.get())

@@ -6,6 +6,8 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 import csv
+
+from app.algorithms.elite import Elite
 from app.algorithms.population import Population
 from app.algorithms.selection import Selection
 from app.algorithms.crossover import Crossover
@@ -34,7 +36,8 @@ class Calculations:
                          tournament: int,
                          cross_method: str,
                          mutation_method: str,
-                         roulette_status: bool) -> None:
+                         roulette_status: int,
+                         real: int) -> None:
         """_summary_
 
         Args:
@@ -76,6 +79,7 @@ class Calculations:
         print(f"Picked cross_method: {cross_method}")
         print(f"Picked mutation_method: {mutation_method}")
         print(f"Picked is min/max {roulette_status}")
+        print(f"Is real: {real}")
 
         select_best_param = percent
 
@@ -83,38 +87,83 @@ class Calculations:
 
         # Generate and evaluate population
         pop = Population(population_size, 2, range_start, range_end, precision)
+
+        # p - binarna
         p = pop.generate_population()
+
+        # evaluated - dziesietna
         evaluated = pop.evaluate_population(p)
+        
+        if real == 1:
+            for _ in range(epoch):
 
-        if selection_method == "select best":
-            Calculations.data2export = Calculations.run_select_best(select_best_param, p, evaluated)
-        elif selection_method == "roulette":
-            if roulette_status:
-                Calculations.data2export = Calculations.run_roulette(True, p, evaluated, percent)
-            else:
-                Calculations.data2export = Calculations.run_roulette(False, p, evaluated, percent)
-        elif selection_method == "tournament":
-            Calculations.data2export = Calculations.run_tournament(p, evaluated, percent, tournament)
+                selected, not_selected = Calculations.run_elitism(elite_strategy, evaluated)
+                evaluated = not_selected
+                print(selected)
+                print(not_selected)
 
-        if cross_method == "one-point":
-            Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 1)
-        elif cross_method == "two-point":
-            Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 2)
-        elif cross_method == "three-point":
-            Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 3)
-        elif cross_method == "uniform":
-            Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated, percent)
+                if selection_method == "select best":
+                    Calculations.data2export = Calculations.run_select_best(select_best_param, p, evaluated)
+                elif selection_method == "roulette":
+                    if roulette_status:
+                        Calculations.data2export = Calculations.run_roulette(True, p, evaluated, percent)
+                    else:
+                        Calculations.data2export = Calculations.run_roulette(False, p, evaluated, percent)
+                elif selection_method == "tournament":
+                    Calculations.data2export = Calculations.run_tournament(p, evaluated, percent, tournament)
 
-        if mutation_method == "one point":
-            Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
-        elif mutation_method == "two point":
-            Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated)
-        elif mutation_method == "edge":
-            Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated)
+                if cross_method == "one-point":
+                    Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 1)
+                elif cross_method == "two-point":
+                    Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 2)
+                elif cross_method == "three-point":
+                    Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 3)
+                elif cross_method == "uniform":
+                    Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated, percent)
 
-        Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
+                if mutation_method == "one point":
+                    Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
+                elif mutation_method == "two point":
+                    Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated)
+                elif mutation_method == "edge":
+                    Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated)
 
-        Calculations.data2export = Calculations.run_elitism(elite_strategy, evaluated)
+                Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
+                evaluated = np.concatenate((selected, evaluated))
+        else:
+            for _ in range(epoch):
+
+                selected, not_selected = Calculations.run_elitism(elite_strategy, p)
+                evaluated = not_selected
+
+                if selection_method == "select best":
+                    Calculations.data2export = Calculations.run_select_best(select_best_param, p, evaluated)
+                elif selection_method == "roulette":
+                    if roulette_status:
+                        Calculations.data2export = Calculations.run_roulette(True, p, evaluated, percent)
+                    else:
+                        Calculations.data2export = Calculations.run_roulette(False, p, evaluated, percent)
+                elif selection_method == "tournament":
+                    Calculations.data2export = Calculations.run_tournament(p, evaluated, percent, tournament)
+
+                if cross_method == "one-point":
+                    Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 1)
+                elif cross_method == "two-point":
+                    Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 2)
+                elif cross_method == "three-point":
+                    Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 3)
+                elif cross_method == "uniform":
+                    Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated, percent)
+
+                if mutation_method == "one point":
+                    Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
+                elif mutation_method == "two point":
+                    Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated)
+                elif mutation_method == "edge":
+                    Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated)
+
+                Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
+                evaluated = np.concatenate((selected, evaluated))
 
         end_time = datetime.now()
         
