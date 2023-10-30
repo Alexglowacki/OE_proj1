@@ -96,11 +96,13 @@ class Calculations:
 
         # evaluated - dziesietna
         evaluated = pop.evaluate_population(p)
-        
+
         if real == "1":
             for _ in range(epoch):
+                print("Epoch: ", _)
 
                 selected, not_selected = Calculations.run_elitism(elite_strategy, evaluated)
+
                 evaluated = not_selected
 
                 if Calculations.selection_method == "select best":
@@ -120,7 +122,7 @@ class Calculations:
                 elif cross_method == "three-point":
                     Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 3)
                 elif cross_method == "uniform":
-                    Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated, percent)
+                    Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated)
 
                 if mutation_method == "one point":
                     Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
@@ -133,8 +135,9 @@ class Calculations:
                 evaluated = np.concatenate((selected, evaluated))
         else:
             for _ in range(epoch):
+                print("Epoch: ", _)
 
-                selected, not_selected = Calculations.run_elitism(elite_strategy, p)
+                elite_pop, not_selected = Calculations.run_elitism(elite_strategy, evaluated)
                 evaluated = not_selected
 
                 evaluated = p
@@ -156,7 +159,7 @@ class Calculations:
                 elif cross_method == "three-point":
                     Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 3)
                 elif cross_method == "uniform":
-                    Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated, percent)
+                    Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated)
 
                 if mutation_method == "one point":
                     Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
@@ -193,7 +196,7 @@ class Calculations:
         return cross_k
 
     def run_uniform(prob, pop):
-        cross_uniform = Crossover('uniform', prob).select(pop, prob)
+        cross_uniform = Crossover('uniform', prob).select(pop, 1, prob)
         return cross_uniform
     
     def run_one_point(probability, pop):

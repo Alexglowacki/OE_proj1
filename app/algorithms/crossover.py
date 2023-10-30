@@ -61,7 +61,7 @@ class Crossover:
                     child2[j] = parent2[j]
             new_pop.append(child1)
             new_pop.append(child2)
-
+        return np.array(new_pop)
 
     def create_uniques(points):
         unq, c = np.unique(points, return_counts=1)
