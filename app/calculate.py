@@ -180,7 +180,8 @@ class Calculations:
         return pop_best
 
     def run_roulette(is_min: bool, p, evaluated, percent):
-        pop_roulette = Selection('roulette_wheel', percent).select(p, evaluated)
+        # the zero in tournament size here is a magic number
+        pop_roulette = Selection('roulette_wheel', percent, 0).select(p, evaluated)
         return pop_roulette
 
     def run_tournament(p, evaluated, percent, tournament_size):

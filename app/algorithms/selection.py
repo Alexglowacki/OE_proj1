@@ -43,11 +43,11 @@ class Selection:
         distribuer = np.concatenate(([0], np.cumsum(scores)))
 
         rng = np.random.default_rng()
-        print(rng)
+
         indexes = []
         for _ in range(pop.shape[0]):
             rng_num = rng.random()  # number drawn
-            print(rng_num)
+
             for index in range(1, distribuer.shape[0]):
                 if rng_num > distribuer[index - 1] and rng_num < distribuer[index]:
                     indexes.append(index - 1)

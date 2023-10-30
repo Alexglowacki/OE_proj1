@@ -1,7 +1,4 @@
 - nie dziala uniform crossover
 - nie dziala minimalizacja i maksymalizacja
 - nie ma zaimplementowanych operacji na binarnej populacji(na pewno nie inwersja i mutacja)
-- trzeba przetestowac kazda opcje bo 3 minuty z ta apka i znajdzie  sie z bomby cos do wyrzucenia
-- tournament dalej nie dziala
-- run_roulette sie wywala 
 - dodac x1 , x2
