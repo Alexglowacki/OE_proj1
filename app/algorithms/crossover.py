@@ -17,6 +17,8 @@ class Crossover:
             return self.uniform(evaluated_pop, probability)
         elif self.decision == "arithmetic":
             return self.arithmetic_crossover(evaluated_pop, probability)
+        elif self.decision == 'linear':
+            return self.linear_crossover(evaluated_pop, probability)
         else:
             raise NameError("Not a type of crossover")
 
@@ -89,6 +91,32 @@ class Crossover:
                 new_pop.append(child4)
 
         return np.array(new_pop)
+
+    def linear_crossover(self, pop, probability):
+        pop_size = pop.shape[0]
+        new_pop = []
+
+        for i in range(0, pop_size, 2):
+            rand_value = np.random.rand()
+            parent1 = pop[i]
+            parent2 = pop[i + 1]
+
+            if rand_value > probability:
+                new_pop.append(parent1)
+                new_pop.append(parent2)
+            else:
+                crossover_point = random.randint(1, len(parent1) - 1)
+
+                child1 = parent1[:crossover_point] + parent2[crossover_point:]
+                child2 = parent2[:crossover_point] + parent1[crossover_point:]
+
+                new_pop.append(child1)
+                new_pop.append(child2)
+
+        return np.array(new_pop)
+
+
+
 
     def create_uniques(points):
         unq, c = np.unique(points, return_counts=1)

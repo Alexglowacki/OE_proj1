@@ -125,6 +125,8 @@ class Calculations:
                     Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated)
                 elif cross_method == "arithmetic":
                     Calculations.data2export = Calculations.run_arithmetic(cross_probability, evaluated)
+                elif cross_method == 'linear':
+                    Calculations.data2export = Calculations.run_linear(cross_probability, evaluated)
 
                 if mutation_method == "one point":
                     Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
@@ -204,6 +206,10 @@ class Calculations:
     def run_arithmetic(prob, pop):
         cross_arithmetic = Crossover('arithmetic', prob).select(pop, 1, prob)
         return cross_arithmetic
+
+    def run_linear(prob, pop):
+        cross_linear = Crossover('linear', prob).select(pop, 1, prob)
+        return cross_linear
     
     def run_one_point(probability, pop):
         mutation_one_point = Mutation('one point', probability).select(pop, probability)
