@@ -17,6 +17,7 @@ class Elite:
         # not_selected = np.array([pop[i] for i in not_selected_indexes])
 
         selected = np.argsort(pop)
+
         selected = selected[:n_selected]
         not_selected = pop[n_selected:]
 

@@ -1,3 +1,3 @@
-- nie dziala uniform crossover
+
 - nie ma zaimplementowanych operacji na binarnej populacji(na pewno nie inwersja i mutacja)
 - dodac x1 , x2

@@ -132,6 +132,10 @@ class Calculations:
                     Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated)
                 elif mutation_method == "edge":
                     Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated)
+                elif mutation_method == "uniform":
+                    Calculations.data2export = Calculations.run_uniform_mut(mutation_probability, evaluated)
+                elif mutation_method == "gaussian":
+                    Calculations.data2export = Calculations.run_gaussian(mutation_probability, evaluated)
 
                 Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
                 evaluated = np.concatenate((selected, evaluated))
@@ -206,17 +210,25 @@ class Calculations:
         return cross_arithmetic
     
     def run_one_point(probability, pop):
-        mutation_one_point = Mutation('one point', probability).select(pop, probability)
+        mutation_one_point = Mutation('one point', probability, range_start, range_end).select(pop, probability)
         return mutation_one_point
     
     def run_two_point(probability, pop):
-        mutation_two_point = Mutation('two point', probability).select(pop, probability)
+        mutation_two_point = Mutation('two point', probability, range_start, range_end).select(pop, probability)
         return mutation_two_point
     
     def run_edge(probability, pop):
-        mutation_edge = Mutation('edge', probability).select(pop, probability)
+        mutation_edge = Mutation('edge', probability, range_start, range_end).select(pop, probability)
         return mutation_edge
-    
+
+    def run_uniform_mut(probability, pop):
+        mutation_uniform = Mutation('uniform', probability, range_start, range_end).select(pop, probability)
+        return mutation_uniform
+
+    def run_gaussian(probability, pop):
+        mutation_gaussian = Mutation('gaussian', probability, range_start, range_end).select(pop, probability)
+        return mutation_gaussian
+
     def run_inversion(probablity, pop):
         inversion_result = Inversion(probablity).inversion(pop, probablity)
         return inversion_result
