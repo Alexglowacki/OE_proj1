@@ -3,13 +3,14 @@ from app.algorithms.function import f_rana
 
 
 class Population:
-    def __init__(self, population_size, num_of_variables, range_min, range_max, precision):
+    def __init__(self, population_size, num_of_variables, range_min, range_max, precision, maximize=True):
         self.population_size = population_size
         self.num_of_variables = num_of_variables
         self.range_min = range_min
         self.range_max = range_max
         self.precision = precision
         self.num_of_bits = self.binary_length()
+        self.maximize = maximize
 
     def np_to_dec(self, n):  #returns decimal represntation for numpy array
         n = ''.join(str(int(i)) for i in n)
@@ -39,5 +40,9 @@ class Population:
 
     def evaluate_population(self, population):
         population = self.decode_population(population)
-        return np.array([f_rana(r) for r in population]).flatten()
+
+        if self.maximize:
+            return np.array([f_rana(r) for r in population]).flatten()
+        else:
+            return -1 * np.array([f_rana(r) for r in population]).flatten()
 
