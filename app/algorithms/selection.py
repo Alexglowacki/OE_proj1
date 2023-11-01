@@ -37,10 +37,10 @@ class Selection:
     def roulette_wheel(self, pop, evaluated_pop):
         evaluated_pop = 1 / (evaluated_pop + 1)
         total = np.sum(evaluated_pop)
-        scores = np.array([x / total for x in evaluated_pop])  # probability 1/Sum
+        scores = evaluated_pop / total  # probability 1/Sum
 
         # sum of two probabilities one by one. Example, p [1, 2, 3, 4] then distr [1, 3, 6, 10]
-        distribuer = np.concatenate(([0], np.cumsum(scores)))
+        distribuer = np.cumsum(scores)
 
         rng = np.random.default_rng()
 
@@ -48,14 +48,19 @@ class Selection:
         for _ in range(pop.shape[0]):
             rng_num = rng.random()  # number drawn
 
-            for index in range(1, distribuer.shape[0]):
-                if rng_num > distribuer[index - 1] and rng_num < distribuer[index]:
-                    indexes.append(index - 1)
+            if rng_num >= 1.0:
+                rng_num = 1.0 - np.finfo(float).eps
+
+            for index in range(distribuer.shape[0]):
+                if rng_num <= distribuer[index]:
+                    indexes.append(index)
                     break
 
+        # Ensure the indexes are within the valid range [0, len(pop) - 1]
+        indexes = [idx if 0 <= idx < len(pop) else len(pop) - 1 for idx in indexes]
         new_pop = pop[indexes]
 
-        return new_pop, []
+        return new_pop, indexes
 
     def tournament(self, pop, evaluated_pop):
         pop_size = pop.shape[0]
