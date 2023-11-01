@@ -1,3 +1,4 @@
+import random
 import numpy as np
 
 class Crossover:
@@ -14,6 +15,8 @@ class Crossover:
             return self.k_point(evaluated_pop, 3, probability)
         elif self.decision == "uniform":
             return self.uniform(evaluated_pop, probability)
+        elif self.decision == "arithmetic":
+            return self.arithmetic_crossover(evaluated_pop, probability)
         else:
             raise NameError("Not a type of crossover")
 
@@ -61,6 +64,30 @@ class Crossover:
                     child2[j] = parent2[j]
             new_pop.append(child1)
             new_pop.append(child2)
+        return np.array(new_pop)
+    
+    def arithmetic_crossover(self, pop, probability):
+        pop_size = pop.shape[0]
+        new_pop = []
+
+        for i in range(0, pop_size, 4):
+            k = random.random()
+            if k < probability:
+                parent1 = pop[i] #x1
+                parent2 = pop[i+1] #y1
+                parent3 = pop[i+2] #x2
+                parent4 = pop[i+3] #y2
+
+                child1 =  k * parent1 + (1 - k) * parent3 #x1 new
+                child2 =  k * parent2 + (1 - k) * parent4 #y1 new
+                child3 =  (1 - k) * parent1 + k * parent3 #x2 new
+                child4 =  (1 - k) * parent2 + k * parent4 #y2 new
+
+                new_pop.append(child1)
+                new_pop.append(child2)
+                new_pop.append(child3)
+                new_pop.append(child4)
+
         return np.array(new_pop)
 
     def create_uniques(points):

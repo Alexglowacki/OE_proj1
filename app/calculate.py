@@ -99,7 +99,7 @@ class Calculations:
 
         if real == "1":
             for _ in range(epoch):
-                print("Epoch: ", _)
+                # print("Epoch: ", _)
 
                 selected, not_selected = Calculations.run_elitism(elite_strategy, evaluated)
 
@@ -123,6 +123,8 @@ class Calculations:
                     Calculations.data2export = Calculations.run_k_point(cross_probability, evaluated, 3)
                 elif cross_method == "uniform":
                     Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated)
+                elif cross_method == "arithmetic":
+                    Calculations.data2export = Calculations.run_arithmetic(cross_probability, evaluated)
 
                 if mutation_method == "one point":
                     Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
@@ -135,7 +137,7 @@ class Calculations:
                 evaluated = np.concatenate((selected, evaluated))
         else:
             for _ in range(epoch):
-                print("Epoch: ", _)
+                # print("Epoch: ", _)
 
                 elite_pop, not_selected = Calculations.run_elitism(elite_strategy, evaluated)
                 evaluated = not_selected
@@ -198,6 +200,10 @@ class Calculations:
     def run_uniform(prob, pop):
         cross_uniform = Crossover('uniform', prob).select(pop, 1, prob)
         return cross_uniform
+    
+    def run_arithmetic(prob, pop):
+        cross_arithmetic = Crossover('arithmetic', prob).select(pop, 1, prob)
+        return cross_arithmetic
     
     def run_one_point(probability, pop):
         mutation_one_point = Mutation('one point', probability).select(pop, probability)
