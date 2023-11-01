@@ -25,11 +25,11 @@ if __name__ == '__main__':
     print(f"\nDecoded population:\n{decoded}")
     print(f"\n")
     #Selection
-    pop_best = Selection('best', 0.2).select(p, evaluated)
+    pop_best = Selection('best', 0.2, 0).select(p, evaluated)
     print(f"20% from best selection:\n{pop.decode_population(pop_best[0])}")
-    pop_roulette = Selection('roulette_wheel', 0.2).select(p, evaluated)
+    pop_roulette = Selection('roulette_wheel', 0.2, 0).select(p, evaluated)
     print(f"\n\nRoulette selection:\n{pop.decode_population(pop_roulette[0])}")
-    pop_tournament = Selection('tournament', 0.2).select(p, evaluated)
+    pop_tournament = Selection('tournament', 0.2, 8).select(p, evaluated)
     print(f"\n\n20% from tournament selection:\n{pop.decode_population(pop_tournament[0])}")
     #Crossover
     cross_k = Crossover('k-point', 0.2).select(p, 2, 0.2)
