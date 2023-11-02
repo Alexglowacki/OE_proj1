@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import benchmark_functions as bf
 
 class Crossover:
     def __init__(self, decision, probability):
@@ -101,19 +102,33 @@ class Crossover:
             parent1 = pop[i]
             parent2 = pop[i + 1]
 
-            if rand_value > probability:
+            if rand_value < probability:
                 new_pop.append(parent1)
                 new_pop.append(parent2)
             else:
-                crossover_point = random.randint(1, len(parent1) - 1)
+                parent_size = len(parent1)
+                z = np.zeros(parent_size)
+                v = np.zeros(parent_size)
+                w = np.zeros(parent_size)
 
-                child1 = parent1[:crossover_point] + parent2[crossover_point:]
-                child2 = parent2[:crossover_point] + parent1[crossover_point:]
+                for j in range(parent_size):
+                    z[j] = (1 / 2 * parent1[j] + 1 / 2 * parent2[j])
+                    v[j] = (3 / 2 * parent1[j] - 1 / 2 * parent2[j])
+                    w[j] = (-1 / 2 * parent1[j] + 3 / 2 * parent2[j])
 
-                new_pop.append(child1)
-                new_pop.append(child2)
+                vectors = [z, v, w]
+                evaluate = [self.evaluate(parent_size, r) for r in vectors]
+                sorted_pairs = sorted(zip(vectors, evaluate), key=lambda x: x[1])
+                offsprings = [pair[0] for pair in sorted_pairs]
+
+                new_pop.append(offsprings[-2])
+                new_pop.append(offsprings[-1])
 
         return np.array(new_pop)
+
+    def evaluate(self, n_dimensions, point):
+        func = bf.Rana(n_dimensions=n_dimensions)
+        return func(point)
 
 
 
