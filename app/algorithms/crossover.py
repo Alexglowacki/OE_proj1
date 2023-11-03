@@ -84,23 +84,25 @@ class Crossover:
         pop_size = pop.shape[0]
         new_pop = []
 
-        for i in range(0, pop_size, 4):
+        for i in range(0, pop_size, 2):
             k = random.random()
+            parent1 = pop[i] #1
+            parent2 = pop[i+1] #2
             if k < probability:
-                parent1 = pop[i] #x1
-                parent2 = pop[i+1] #y1
-                parent3 = pop[i+2] #x2
-                parent4 = pop[i+3] #y2
 
-                child1 =  k * parent1 + (1 - k) * parent3 #x1 new
-                child2 =  k * parent2 + (1 - k) * parent4 #y1 new
-                child3 =  (1 - k) * parent1 + k * parent3 #x2 new
-                child4 =  (1 - k) * parent2 + k * parent4 #y2 new
+                size = len(parent1)
+                child1 = np.zeros_like(parent1)
+                child2 = np.zeros_like(parent2)
 
+                for j in range(size):
+                    child1[j] =  k * parent1[j] + (1 - k) * parent2[j]
+                    child2[j] =  (1 - k) * parent1[j] + k * parent2[j]
+                
                 new_pop.append(child1)
                 new_pop.append(child2)
-                new_pop.append(child3)
-                new_pop.append(child4)
+            else:
+                new_pop.append(parent1)
+                new_pop.append(parent2)
 
         return np.array(new_pop)
 

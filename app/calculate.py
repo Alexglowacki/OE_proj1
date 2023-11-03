@@ -92,17 +92,22 @@ class Calculations:
         start_time = datetime.now()
 
         # Generate and evaluate population
-        pop = Population(population_size, 2, range_start, range_end, precision)
+        pop = Population(population_size, variable_number, range_start, range_end, precision)
 
         # p - binarna
         p = pop.generate_population()
+        p2 = pop.generate_population()
 
         # evaluated - dziesietna
         evaluated = pop.evaluate_population(p)
+        evaluated = np.reshape(evaluated, (population_size, 1))
+        evaluated2 = pop.evaluate_population(p2)
+        evaluated2 = np.reshape(evaluated2, (population_size, 1))
+        evaluated = np.concatenate((evaluated, evaluated2), axis=1)
+        # print(evaluated)
 
         if real == "1":
             for _ in range(epoch):
-                # print("Epoch: ", _)
 
                 selected, not_selected = Calculations.run_elitism(elite_strategy, evaluated)
 
@@ -138,22 +143,20 @@ class Calculations:
                     Calculations.data2export = Calculations.run_average_crossover(cross_probability, evaluated)
 
                 if mutation_method == "one point":
-                    Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
+                    Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated, real)
                 elif mutation_method == "two point":
-                    Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated)
+                    Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated, real)
                 elif mutation_method == "edge":
-                    Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated)
+                    Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated, real)
 
                 Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
                 evaluated = np.concatenate((selected, evaluated))
+                Calculations.data2export = evaluated
         else:
             for _ in range(epoch):
-                # print("Epoch: ", _)
 
-                elite_pop, not_selected = Calculations.run_elitism(elite_strategy, evaluated)
+                selected, not_selected = Calculations.run_elitism_bin(elite_strategy, p)
                 evaluated = not_selected
-
-                evaluated = p
 
                 if Calculations.selection_method == "select best":
                     Calculations.data2export = Calculations.run_select_best(select_best_param, p, evaluated)
@@ -175,19 +178,25 @@ class Calculations:
                     Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated)
 
                 if mutation_method == "one point":
-                    Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
+                    Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated, real)
                 elif mutation_method == "two point":
-                    Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated)
+                    Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated, real)
                 elif mutation_method == "edge":
-                    Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated)
+                    Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated, real)
 
                 Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
-                # evaluated = np.concatenate((selected, evaluated))
+                print(selected.shape)
+                print(evaluated.shape)
+                print(f"selected: {selected}")
+                print(f"evaluated: {evaluated}")
+                evaluated = np.concatenate((selected, evaluated))
+                Calculations.data2export = evaluated
+
 
         end_time = datetime.now()
         
         Calculations.algorithm_time = end_time - start_time
-        Calculations.export_to_csv()
+        Calculations.export_to_csv(real, population_size, variable_number, range_start, range_end, precision)
 
         print(Calculations.algorithm_time)
 
@@ -233,16 +242,16 @@ class Calculations:
         return cross_average
 
     
-    def run_one_point(probability, pop):
-        mutation_one_point = Mutation('one point', probability).select(pop, probability)
+    def run_one_point(probability, pop, real):
+        mutation_one_point = Mutation('one point', probability, real).select(pop, probability)
         return mutation_one_point
     
-    def run_two_point(probability, pop):
-        mutation_two_point = Mutation('two point', probability).select(pop, probability)
+    def run_two_point(probability, pop, real):
+        mutation_two_point = Mutation('two point', probability, real).select(pop, probability)
         return mutation_two_point
     
-    def run_edge(probability, pop):
-        mutation_edge = Mutation('edge', probability).select(pop, probability)
+    def run_edge(probability, pop, real):
+        mutation_edge = Mutation('edge', probability, real).select(pop, probability)
         return mutation_edge
     
     def run_inversion(probablity, pop):
@@ -252,37 +261,74 @@ class Calculations:
     def run_elitism(elite_strategy, pop):
         elite_result = Elite(elite_strategy).elitism(pop, elite_strategy)
         return elite_result
+    
+    def run_elitism_bin(elite_strategy, pop):
+        elite_result = Elite(elite_strategy).elitism_bin(pop, elite_strategy)
+        return elite_result
 
-    def export_to_csv():
+    def export_to_csv(real, population_size, variable_number, range_start, range_end, precision):
         print("Exporting...")
         file_path = filedialog.askopenfilename(defaultextension="csv")
-        print(file_path)
 
         header = ["Val1", "Avg", "Dev"]
 
         # calculations results
         data = np.array(Calculations.data2export)
-        data = np.reshape(data, (data.shape[0], ))
-        numbers_series = pd.Series(data)
-        data = np.reshape(data, (data.shape[0], 1))
+        if real == "1":
+            print("real")
 
-        data_avg = numbers_series.rolling(2).mean()
-        data_avg = data_avg.to_numpy()
-        data_avg = np.reshape(data_avg, (data.shape[0], 1))
+            data = np.reshape(data, (data.shape[0], 2))
+            numbers_series = pd.Series(data[:, 0])
 
-        data_std = numbers_series.rolling(2).std()
-        data_std = data_std.to_numpy()
-        data_std = np.reshape(data_std, (data.shape[0], 1))
+            data = data[:, 0]
 
-        data = np.concatenate((data, data_avg), axis=1)
-        data = np.concatenate((data, data_std), axis=1)
-        print(data)
+            data = np.reshape(data, (data.shape[0], 1))
 
-        # export to csv
-        with open(file_path, 'w') as exportfile:
-            csvwriter = csv.writer(exportfile)
-            csvwriter.writerow(header)
-            csvwriter.writerows(data)
+            data_avg = numbers_series.rolling(2).mean()
+            data_avg = data_avg.to_numpy()
+            data_avg = np.reshape(data_avg, (data.shape[0], 1))
 
-            print("Exported")
+            data_std = numbers_series.rolling(2).std()
+            data_std = data_std.to_numpy()
+            data_std = np.reshape(data_std, (data.shape[0], 1))
 
+            data = np.concatenate((data, data_avg), axis=1)
+            data = np.concatenate((data, data_std), axis=1)
+
+            # export to csv
+            with open(file_path, 'w') as exportfile:
+                csvwriter = csv.writer(exportfile)
+                csvwriter.writerow(header)
+                csvwriter.writerows(data)
+
+                print("Exported")
+        else:
+            print("binary")
+            
+            pop = Population(population_size, variable_number, range_start, range_end, precision)
+            data = pop.decode_population(data)
+            # data
+            data = np.reshape(data, (data.shape[0], ))
+
+            numbers_series = pd.Series(data)
+            data = np.reshape(data, (data.shape[0], 1))
+
+            data_avg = numbers_series.rolling(2).mean()
+            data_avg = data_avg.to_numpy()
+            data_avg = np.reshape(data_avg, (data.shape[0], 1))
+
+            data_std = numbers_series.rolling(2).std()
+            data_std = data_std.to_numpy()
+            data_std = np.reshape(data_std, (data.shape[0], 1))
+
+            data = np.concatenate((data, data_avg), axis=1)
+            data = np.concatenate((data, data_std), axis=1)
+            print(data)
+
+            # export to csv
+            with open(file_path, 'w') as exportfile:
+                csvwriter = csv.writer(exportfile)
+                csvwriter.writerow(header)
+                csvwriter.writerows(data)
+
+                print("Exported")
