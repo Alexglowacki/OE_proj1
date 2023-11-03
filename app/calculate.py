@@ -308,9 +308,11 @@ class Calculations:
             pop = Population(population_size, variable_number, range_start, range_end, precision)
             data = pop.decode_population(data)
             # data
-            data = np.reshape(data, (data.shape[0], ))
+            data = np.reshape(data, (data.shape[0], 2))
+            numbers_series = pd.Series(data[:, 0])
 
-            numbers_series = pd.Series(data)
+            data = data[:, 0]
+
             data = np.reshape(data, (data.shape[0], 1))
 
             data_avg = numbers_series.rolling(2).mean()
@@ -323,7 +325,6 @@ class Calculations:
 
             data = np.concatenate((data, data_avg), axis=1)
             data = np.concatenate((data, data_std), axis=1)
-            print(data)
 
             # export to csv
             with open(file_path, 'w') as exportfile:
