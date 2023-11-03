@@ -84,6 +84,9 @@ class Calculations:
         print(f"Picked is min/max {roulette_status}")
         print(f"Is real: {real}")
 
+        alpha_cross = 0.2
+        beta_cross = 0.3
+
         select_best_param = percent
 
         start_time = datetime.now()
@@ -127,6 +130,12 @@ class Calculations:
                     Calculations.data2export = Calculations.run_arithmetic(cross_probability, evaluated)
                 elif cross_method == 'linear':
                     Calculations.data2export = Calculations.run_linear(cross_probability, evaluated)
+                elif cross_method == 'blend_crossover_alpha':
+                    Calculations.data2export = Calculations.run_blend_crossover_alpha(cross_probability, evaluated, alpha_cross)
+                elif cross_method == 'blend_crossover_alpha_beta':
+                    Calculations.data2export = Calculations.run_blend_crossover_alpha_beta(cross_probability, evaluated, alpha_cross, beta_cross)
+                elif cross_method == 'average_crossover':
+                    Calculations.data2export = Calculations.run_average_crossover(cross_probability, evaluated)
 
                 if mutation_method == "one point":
                     Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated)
@@ -196,20 +205,33 @@ class Calculations:
         return pop_tournament
 
     def run_k_point(prob, pop, k):
-        cross_k = Crossover('k-point', prob).select(pop, k, prob)
+        cross_k = Crossover('k-point', prob).select(pop, k, prob, 0.1, 0.1)
         return cross_k
 
     def run_uniform(prob, pop):
-        cross_uniform = Crossover('uniform', prob).select(pop, 1, prob)
+        cross_uniform = Crossover('uniform', prob).select(pop, 1, prob, 0.1, 0.1)
         return cross_uniform
     
     def run_arithmetic(prob, pop):
-        cross_arithmetic = Crossover('arithmetic', prob).select(pop, 1, prob)
+        cross_arithmetic = Crossover('arithmetic', prob).select(pop, 1, prob, 0.1, 0.1)
         return cross_arithmetic
 
     def run_linear(prob, pop):
-        cross_linear = Crossover('linear', prob).select(pop, 1, prob)
+        cross_linear = Crossover('linear', prob).select(pop, 1, prob, 0.1, 0.1)
         return cross_linear
+
+    def run_blend_crossover_alpha(prob, pop, alpha):
+        cross_alpha = Crossover('blend_crossover_alpha', prob).select(pop, 1, prob, alpha, 0.1)
+        return cross_alpha
+
+    def run_blend_crossover_alpha_beta(prob, pop, alpha, beta):
+        cross_alpha_beta = Crossover('blend_crossover_alpha_beta', prob).select(pop, 1, prob, alpha, beta)
+        return cross_alpha_beta
+
+    def run_average_crossover(prob, pop):
+        cross_average = Crossover('average_crossover', prob).select(pop, 1, prob, 0.1, 0.1)
+        return cross_average
+
     
     def run_one_point(probability, pop):
         mutation_one_point = Mutation('one point', probability).select(pop, probability)

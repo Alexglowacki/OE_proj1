@@ -144,52 +144,54 @@ class Crossover:
     def blend_crossover_alpha(self, pop, alpha):
         new_pop = []
 
-        for i in range(0, pop.shape[0], 4):
-            parent1_x1 = pop[i]  # x1
-            parent2_y1 = pop[i + 1]  # y1
-            parent3_x2 = pop[i + 2]  # x2
-            parent4_y2 = pop[i + 3]  # y2
+        for i in range(0, len(pop), 4):
+            if i + 3 < len(pop):
+                parent1_x1 = pop[i]  # x1
+                parent2_y1 = pop[i + 1]  # y1
+                parent3_x2 = pop[i + 2]  # x2
+                parent4_y2 = pop[i + 3]  # y2
 
-            di_x = abs(parent1_x1 - parent3_x2)
-            di_y = abs(parent2_y1 - parent4_y2)
+                di_x = abs(parent1_x1 - parent3_x2)
+                di_y = abs(parent2_y1 - parent4_y2)
 
-            min_x = min(parent1_x1, parent3_x2)
-            max_x = max(parent1_x1, parent3_x2)
-            min_y = min(parent2_y1, parent4_y2)
-            max_y = max(parent2_y1, parent4_y2)
+                min_x = min(parent1_x1, parent3_x2)
+                max_x = max(parent1_x1, parent3_x2)
+                min_y = min(parent2_y1, parent4_y2)
+                max_y = max(parent2_y1, parent4_y2)
 
-            x1_new = random.uniform(min_x - alpha * di_x, max_x + alpha * di_x)
-            y1_new = random.uniform(min_y - alpha * di_y, max_y + alpha * di_y)
-            x2_new = random.uniform(min_x - alpha * di_x, max_x + alpha * di_x)
-            y2_new = random.uniform(min_y - alpha * di_y, max_y + alpha * di_y)
+                x1_new = random.uniform(min_x - alpha * di_x, max_x + alpha * di_x)
+                y1_new = random.uniform(min_y - alpha * di_y, max_y + alpha * di_y)
+                x2_new = random.uniform(min_x - alpha * di_x, max_x + alpha * di_x)
+                y2_new = random.uniform(min_y - alpha * di_y, max_y + alpha * di_y)
 
-            new_pop.extend([x1_new, y1_new, x2_new, y2_new])
+                new_pop.extend([x1_new, y1_new, x2_new, y2_new])
 
         return np.array(new_pop)
 
     def blend_crossover_alpha_beta(self, pop, alpha, beta):
         new_pop = []
 
-        for i in range(0, pop.shape[0], 4):
-            parent1_x1 = pop[i]  # x1
-            parent2_y1 = pop[i + 1]  # y1
-            parent3_x2 = pop[i + 2]  # x2
-            parent4_y2 = pop[i + 3]  # y2
+        for i in range(0, len(pop), 4):
+            if i + 3 < len(pop):
+                parent1_x1 = pop[i]  # x1
+                parent2_y1 = pop[i + 1]  # y1
+                parent3_x2 = pop[i + 2]  # x2
+                parent4_y2 = pop[i + 3]  # y2
 
-            di_x = abs(parent1_x1 - parent3_x2)
-            di_y = abs(parent2_y1 - parent4_y2)
+                di_x = abs(parent1_x1 - parent3_x2)
+                di_y = abs(parent2_y1 - parent4_y2)
 
-            min_x = min(parent1_x1, parent3_x2)
-            max_x = max(parent1_x1, parent3_x2)
-            min_y = min(parent2_y1, parent4_y2)
-            max_y = max(parent2_y1, parent4_y2)
+                min_x = min(parent1_x1, parent3_x2)
+                max_x = max(parent1_x1, parent3_x2)
+                min_y = min(parent2_y1, parent4_y2)
+                max_y = max(parent2_y1, parent4_y2)
 
-            x1_new = random.uniform(min_x - alpha * di_x, max_x + beta * di_x)
-            y1_new = random.uniform(min_y - alpha * di_y, max_y + beta * di_y)
-            x2_new = random.uniform(min_x - alpha * di_x, max_x + beta * di_x)
-            y2_new = random.uniform(min_y - alpha * di_y, max_y + beta * di_y)
+                x1_new = random.uniform(min_x - alpha * di_x, max_x + beta * di_x)
+                y1_new = random.uniform(min_y - alpha * di_y, max_y + beta * di_y)
+                x2_new = random.uniform(min_x - alpha * di_x, max_x + beta * di_x)
+                y2_new = random.uniform(min_y - alpha * di_y, max_y + beta * di_y)
 
-            new_pop.extend([x1_new, y1_new, x2_new, y2_new])
+                new_pop.extend([x1_new, y1_new, x2_new, y2_new])
 
         return np.array(new_pop)
 
@@ -197,7 +199,7 @@ class Crossover:
         new_pop = []
         for i in range(0, pop.shape[0], 4):
             k = random.random()
-            if k < probability:
+            if k < probability and i + 3 < len(pop):
                 parent1_x1 = pop[i]  # x1
                 parent2_y1 = pop[i + 1]  # y1
                 parent3_x2 = pop[i + 2]  # x2
@@ -214,7 +216,7 @@ class Crossover:
         new_pop=[]
         for i in range(0, pop.shape[0], 4):
             k = random.random()
-            if k < probability:
+            if k < probability and i + 3 < len(pop):
                 parent1_x1 = pop[i]  # x1
                 parent2_y1 = pop[i + 1]  # y1
                 parent3_x2 = pop[i + 2]  # x2
