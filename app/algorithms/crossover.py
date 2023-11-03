@@ -2,12 +2,15 @@ import random
 import numpy as np
 import benchmark_functions as bf
 
+from app.algorithms.function import f_rana
+
+
 class Crossover:
     def __init__(self, decision, probability):
         self.probability = probability
         self.decision = decision
 
-    def select(self, evaluated_pop, k, probability):
+    def select(self, evaluated_pop, k, probability, alpha, beta):
         if self.decision == "one-point":
             return self.k_point(evaluated_pop, 1, probability)
         elif self.decision == "two-point":
@@ -20,6 +23,14 @@ class Crossover:
             return self.arithmetic_crossover(evaluated_pop, probability)
         elif self.decision == 'linear':
             return self.linear_crossover(evaluated_pop, probability)
+        elif self.decision == 'blend_crossover_alpha':
+            return self.blend_crossover_alpha(evaluated_pop, alpha)
+        elif self.decision == 'blend_crossover_alpha_beta':
+            return self.blend_crossover_alpha_beta(evaluated_pop, alpha, beta)
+        elif self.decision == 'average_crossover':
+            return self.average_crossover(evaluated_pop, probability)
+        elif self.decision == 'flat_crossover':
+            return self.flat_crossover(evaluated_pop, probability)
         else:
             raise NameError("Not a type of crossover")
 
@@ -129,6 +140,92 @@ class Crossover:
     def evaluate(self, n_dimensions, point):
         func = bf.Rana(n_dimensions=n_dimensions)
         return func(point)
+
+    def blend_crossover_alpha(self, pop, alpha):
+        new_pop = []
+
+        for i in range(0, pop.shape[0], 4):
+            parent1_x1 = pop[i]  # x1
+            parent2_y1 = pop[i + 1]  # y1
+            parent3_x2 = pop[i + 2]  # x2
+            parent4_y2 = pop[i + 3]  # y2
+
+            di_x = abs(parent1_x1 - parent3_x2)
+            di_y = abs(parent2_y1 - parent4_y2)
+
+            min_x = min(parent1_x1, parent3_x2)
+            max_x = max(parent1_x1, parent3_x2)
+            min_y = min(parent2_y1, parent4_y2)
+            max_y = max(parent2_y1, parent4_y2)
+
+            x1_new = random.uniform(min_x - alpha * di_x, max_x + alpha * di_x)
+            y1_new = random.uniform(min_y - alpha * di_y, max_y + alpha * di_y)
+            x2_new = random.uniform(min_x - alpha * di_x, max_x + alpha * di_x)
+            y2_new = random.uniform(min_y - alpha * di_y, max_y + alpha * di_y)
+
+            new_pop.extend([x1_new, y1_new, x2_new, y2_new])
+
+        return np.array(new_pop)
+
+    def blend_crossover_alpha_beta(self, pop, alpha, beta):
+        new_pop = []
+
+        for i in range(0, pop.shape[0], 4):
+            parent1_x1 = pop[i]  # x1
+            parent2_y1 = pop[i + 1]  # y1
+            parent3_x2 = pop[i + 2]  # x2
+            parent4_y2 = pop[i + 3]  # y2
+
+            di_x = abs(parent1_x1 - parent3_x2)
+            di_y = abs(parent2_y1 - parent4_y2)
+
+            min_x = min(parent1_x1, parent3_x2)
+            max_x = max(parent1_x1, parent3_x2)
+            min_y = min(parent2_y1, parent4_y2)
+            max_y = max(parent2_y1, parent4_y2)
+
+            x1_new = random.uniform(min_x - alpha * di_x, max_x + beta * di_x)
+            y1_new = random.uniform(min_y - alpha * di_y, max_y + beta * di_y)
+            x2_new = random.uniform(min_x - alpha * di_x, max_x + beta * di_x)
+            y2_new = random.uniform(min_y - alpha * di_y, max_y + beta * di_y)
+
+            new_pop.extend([x1_new, y1_new, x2_new, y2_new])
+
+        return np.array(new_pop)
+
+    def average_crossover(self, pop, probability):
+        new_pop = []
+        for i in range(0, pop.shape[0], 4):
+            k = random.random()
+            if k < probability:
+                parent1_x1 = pop[i]  # x1
+                parent2_y1 = pop[i + 1]  # y1
+                parent3_x2 = pop[i + 2]  # x2
+                parent4_y2 = pop[i + 3]  # y2
+
+                x1_new = (parent1_x1 + parent3_x2)/2
+                y1_new = (parent2_y1 + parent4_y2)/2
+
+                new_pop.extend([x1_new, y1_new])
+
+        return np.array(new_pop)
+
+    def flat_crossover(self, pop, probability):
+        new_pop=[]
+        for i in range(0, pop.shape[0], 4):
+            k = random.random()
+            if k < probability:
+                parent1_x1 = pop[i]  # x1
+                parent2_y1 = pop[i + 1]  # y1
+                parent3_x2 = pop[i + 2]  # x2
+                parent4_y2 = pop[i + 3]  # y2
+
+                x1_new = random.uniform(parent1_x1, parent3_x2)
+                y1_new = random.uniform(parent2_y1, parent4_y2)
+
+                new_pop.extend([x1_new, y1_new])
+
+        return np.array(new_pop)
 
 
 

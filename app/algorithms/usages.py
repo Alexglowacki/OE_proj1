@@ -23,7 +23,22 @@ if __name__ == '__main__':
     print(f"\nEvaluated population:\n{evaluated}")
     decoded = pop.decode_population(p)
     print(f"\nDecoded population:\n{decoded}")
-    print(f"\n")
+    # Crossover
+    print(f"\nReshape decoded population:\n{decoded.reshape(-1)}")
+    print(f"\nSize of decoded population:\n{decoded.reshape(-1).size}")
+    cross_alpha = Crossover('blend_crossover_alpha', 0.5).select(decoded.reshape(-1),
+                                                                 0, 0.3, 0.25, 0.11)
+    print(f"\nBlend crossover alpha:\n{cross_alpha}")
+    cross_alpha_beta = Crossover('blend_crossover_alpha_beta', 0.5).select(decoded.reshape(-1),
+                                                                 0, 0.3, 0.25, 0.11)
+    print(f"\nBlend crossover alpha beta:\n{cross_alpha_beta}")
+    cross_average = Crossover('average_crossover', 0.5).select(decoded.reshape(-1),
+                                                                           0, 0.3, 0.25, 0.11)
+    print(f"\nAverage crossover:\n{cross_average}")
+    cross_flat = Crossover('flat_crossover', 0.5).select(decoded.reshape(-1),
+                                                               0, 0.3, 0.25, 0.11)
+    print(f"\nFlat crossover:\n{cross_flat}")
+    print()
     #Selection
     pop_best = Selection('best', 0.2, 0).select(p, evaluated)
     print(f"20% from best selection:\n{pop.decode_population(pop_best[0])}")
@@ -32,13 +47,13 @@ if __name__ == '__main__':
     pop_tournament = Selection('tournament', 0.2, 8).select(p, evaluated)
     print(f"\n\n20% from tournament selection:\n{pop.decode_population(pop_tournament[0])}")
     #Crossover
-    cross_k = Crossover('k-point', 0.2).select(p, 2, 0.2)
+    cross_k = Crossover('k-point', 0.2).select(p, 2, 0.2, 0.25, 0.11)
     print(f"\n\nK-point crossover:\n{pop.decode_population(cross_k)}")
-    cross_one = Crossover('one-point', 0.2).select(p, 2, 0.2)
+    cross_one = Crossover('one-point', 0.2).select(p, 2, 0.2, 0.25, 0.11)
     print(f"\n\nOne-point crossover:\n{pop.decode_population(cross_one)}")
-    cross_two = Crossover('two-point', 0.2).select(p, 2, 0.2)
+    cross_two = Crossover('two-point', 0.2).select(p, 2, 0.2, 0.25, 0.11)
     print(f"\n\nTwo-point crossover:\n{pop.decode_population(cross_two)}")
-    cross_uniform = Crossover('uniform', 0.2).select(p, 2, 0.2)
+    cross_uniform = Crossover('uniform', 0.2).select(p, 2, 0.2, 0.25, 0.11)
     print(f"\n\nUniform crossover:\n{pop.decode_population(cross_uniform)}")
     #Mutation
     mut_one = Mutation('one point', 0.2).select(p, 0.2)
