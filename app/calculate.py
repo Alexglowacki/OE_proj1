@@ -8,6 +8,7 @@ import numpy as np
 import csv
 
 from app.algorithms.elite import Elite
+from app.algorithms.function import f_rana
 from app.algorithms.population import Population
 from app.algorithms.selection import Selection
 from app.algorithms.crossover import Crossover
@@ -270,12 +271,18 @@ class Calculations:
         print("Exporting...")
         file_path = filedialog.askopenfilename(defaultextension="csv")
 
-        header = ["Val1", "Avg", "Dev"]
+        #header = ["Val1", "Avg", "Dev"]
+        header = ["Val1", "Avg", "Dev", 'x1', 'x2', 'Res']
 
         # calculations results
         data = np.array(Calculations.data2export)
         if real == "1":
             print("real")
+
+            f = Calculations.find_x1_x2_res(data)
+            x1 = f[0]
+            x2 = f[1]
+            results = f[2]
 
             data = np.reshape(data, (data.shape[0], 2))
             numbers_series = pd.Series(data[:, 0])
@@ -292,8 +299,10 @@ class Calculations:
             data_std = data_std.to_numpy()
             data_std = np.reshape(data_std, (data.shape[0], 1))
 
-            data = np.concatenate((data, data_avg), axis=1)
-            data = np.concatenate((data, data_std), axis=1)
+            #data = np.concatenate((data, data_avg), axis=1)
+            #data = np.concatenate((data, data_std), axis=1)
+
+            data = np.concatenate((data, data_avg, data_std, x1, x2, results), axis=1)
 
             # export to csv
             with open(file_path, 'w') as exportfile:
@@ -307,6 +316,12 @@ class Calculations:
             
             pop = Population(population_size, variable_number, range_start, range_end, precision)
             data = pop.decode_population(data)
+
+            f = Calculations.find_x1_x2_res(data)
+            x1 = f[0]
+            x2 = f[1]
+            results = f[2]
+
             # data
             data = np.reshape(data, (data.shape[0], 2))
             numbers_series = pd.Series(data[:, 0])
@@ -323,8 +338,10 @@ class Calculations:
             data_std = data_std.to_numpy()
             data_std = np.reshape(data_std, (data.shape[0], 1))
 
-            data = np.concatenate((data, data_avg), axis=1)
-            data = np.concatenate((data, data_std), axis=1)
+            #data = np.concatenate((data, data_avg), axis=1)
+            #data = np.concatenate((data, data_std), axis=1)
+
+            data = np.concatenate((data, data_avg, data_std, x1, x2, results), axis=1)
 
             # export to csv
             with open(file_path, 'w') as exportfile:
@@ -333,3 +350,21 @@ class Calculations:
                 csvwriter.writerows(data)
 
                 print("Exported")
+
+
+    def find_x1_x2_res(data):
+        # Finding the value of f(x1, x2)
+        r = data.reshape(-1)
+        results = []
+        for i in range(0, len(r), 2):
+            if i + 1 < len(r):
+                point_x1 = r[i]
+                point_x2 = r[i + 1]
+                results.append(f_rana([point_x1, point_x2]))
+        x1 = data[:, 0]
+        x2 = data[:, 1]
+        x1 = np.reshape(x1, (x1.shape[0], 1))
+        x2 = np.reshape(x2, (x2.shape[0], 1))
+
+        return [x1, x2, results]
+

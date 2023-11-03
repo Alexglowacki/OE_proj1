@@ -29,7 +29,8 @@ class Graphing:
         data = pd.read_csv(file_path, delimiter=",")
         x_vals = np.linspace(start=0, stop=len(data['Val1']), num=len(data['Val1']))
 
-        y1_vals = data['Val1']
+        #y1_vals = data['Val1']
+        y1_vals = data['Res']
         y2_vals = data['Avg']
         y3_vals = data['Dev']
 
