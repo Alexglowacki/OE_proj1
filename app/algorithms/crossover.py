@@ -66,7 +66,7 @@ class Crossover:
         parent1 = []
         parent2 = []
 
-        for i in range(0, pop_size, 4):
+        for i in range(0, pop_size-2, 4):
             parent1 = pop[i], pop[i+1]
             parent2 = pop[i+1], pop[i+2]
             child1 = np.zeros_like(parent1)

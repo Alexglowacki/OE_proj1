@@ -144,15 +144,15 @@ class Calculations:
                     Calculations.data2export = Calculations.run_average_crossover(cross_probability, evaluated)
 
                 if mutation_method == "one point":
-                    Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated, real)
+                    Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated, real, range_start, range_end)
                 elif mutation_method == "two point":
-                    Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated, real)
+                    Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated, real, range_start, range_end)
                 elif mutation_method == "edge":
-                    Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated, real)
+                    Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated, real, range_start, range_end)
                 elif mutation_method == "uniform":
-                    Calculations.data2export = Calculations.run_uniform_mut(mutation_probability, evaluated, real)
+                    Calculations.data2export = Calculations.run_uniform_mut(mutation_probability, evaluated, real, range_start, range_end)
                 elif mutation_method == "gaussian":
-                    Calculations.data2export = Calculations.run_gaussian(mutation_probability, evaluated, real)
+                    Calculations.data2export = Calculations.run_gaussian(mutation_probability, evaluated, real, range_start, range_end)
 
                 Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
                 evaluated = np.concatenate((selected, evaluated))
@@ -183,11 +183,11 @@ class Calculations:
                     Calculations.data2export = Calculations.run_uniform(cross_probability, evaluated)
 
                 if mutation_method == "one point":
-                    Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated, real)
+                    Calculations.data2export = Calculations.run_one_point(mutation_probability, evaluated, real, range_start, range_end)
                 elif mutation_method == "two point":
-                    Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated, real)
+                    Calculations.data2export = Calculations.run_two_point(mutation_probability, evaluated, real, range_start, range_end)
                 elif mutation_method == "edge":
-                    Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated, real)
+                    Calculations.data2export = Calculations.run_edge(mutation_probability, evaluated, real, range_start, range_end)
 
                 Calculations.data2export = Calculations.run_inversion(inversion_probability, evaluated)
                 print(selected.shape)
@@ -247,23 +247,23 @@ class Calculations:
         return cross_average
 
     
-    def run_one_point(probability, pop, real):
+    def run_one_point(probability, pop, real, range_start, range_end):
         mutation_one_point = Mutation('one point', probability, real, range_start, range_end).select(pop, probability)
         return mutation_one_point
     
-    def run_two_point(probability, pop, real):
+    def run_two_point(probability, pop, real, range_start, range_end):
         mutation_two_point = Mutation('two point', probability, real, range_start, range_end).select(pop, probability)
         return mutation_two_point
     
-    def run_edge(probability, pop, real):
+    def run_edge(probability, pop, real, range_start, range_end):
         mutation_edge = Mutation('edge', probability, real, range_start, range_end).select(pop, probability)
         return mutation_edge
 
-    def run_uniform_mut(probability, pop):
+    def run_uniform_mut(probability, pop, range_start, range_end):
         mutation_uniform = Mutation('uniform', probability, range_start, range_end).select(pop, probability)
         return mutation_uniform
 
-    def run_gaussian(probability, pop):
+    def run_gaussian(probability, pop, range_start, range_end):
         mutation_gaussian = Mutation('gaussian', probability, range_start, range_end).select(pop, probability)
         return mutation_gaussian
 
