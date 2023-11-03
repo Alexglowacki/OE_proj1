@@ -102,7 +102,7 @@ class Crossover:
             parent1 = pop[i]
             parent2 = pop[i + 1]
 
-            if rand_value < probability:
+            if rand_value > probability:
                 new_pop.append(parent1)
                 new_pop.append(parent2)
             else:
