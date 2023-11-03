@@ -156,10 +156,10 @@ class Crossover:
                 di_x = abs(parent1_x1 - parent3_x2)
                 di_y = abs(parent2_y1 - parent4_y2)
 
-                min_x = min(parent1_x1, parent3_x2)
-                max_x = max(parent1_x1, parent3_x2)
-                min_y = min(parent2_y1, parent4_y2)
-                max_y = max(parent2_y1, parent4_y2)
+                min_x = np.minimum(parent1_x1, parent3_x2)
+                max_x = np.maximum(parent1_x1, parent3_x2)
+                min_y = np.minimum(parent2_y1, parent4_y2)
+                max_y = np.maximum(parent2_y1, parent4_y2)
 
                 x1_new = random.uniform(min_x - alpha * di_x, max_x + alpha * di_x)
                 y1_new = random.uniform(min_y - alpha * di_y, max_y + alpha * di_y)
@@ -183,10 +183,10 @@ class Crossover:
                 di_x = abs(parent1_x1 - parent3_x2)
                 di_y = abs(parent2_y1 - parent4_y2)
 
-                min_x = min(parent1_x1, parent3_x2)
-                max_x = max(parent1_x1, parent3_x2)
-                min_y = min(parent2_y1, parent4_y2)
-                max_y = max(parent2_y1, parent4_y2)
+                min_x = np.minimum(parent1_x1, parent3_x2)
+                max_x = np.maximum(parent1_x1, parent3_x2)
+                min_y = np.minimum(parent2_y1, parent4_y2)
+                max_y = np.maximum(parent2_y1, parent4_y2)
 
                 x1_new = random.uniform(min_x - alpha * di_x, max_x + beta * di_x)
                 y1_new = random.uniform(min_y - alpha * di_y, max_y + beta * di_y)
@@ -199,7 +199,7 @@ class Crossover:
 
     def average_crossover(self, pop, probability):
         new_pop = []
-        for i in range(0, pop.shape[0], 4):
+        for i in range(0, len(pop), 4):
             k = random.random()
             if k < probability and i + 3 < len(pop):
                 parent1_x1 = pop[i]  # x1
@@ -216,7 +216,7 @@ class Crossover:
 
     def flat_crossover(self, pop, probability):
         new_pop=[]
-        for i in range(0, pop.shape[0], 4):
+        for i in range(0, len(pop), 4):
             k = random.random()
             if k < probability and i + 3 < len(pop):
                 parent1_x1 = pop[i]  # x1
