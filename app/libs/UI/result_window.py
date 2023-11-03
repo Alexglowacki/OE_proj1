@@ -1,4 +1,7 @@
 import tkinter as tk
+
+import numpy as np
+
 from app.algorithms.function import f_rana
 from app.algorithms.population import Population
 
@@ -38,7 +41,7 @@ class ResultWindow(tk.Tk):
             self.add_label(f'Ideal result = {(f_rana([-488.662570, 512.0]))}')
             
         else:
-            self.add_label(f'Results:\n y = {min(Calculations.data2export[:, 0])}')
+            self.add_label(f'Results:\n y = {np.min(Calculations.data2export[:, 0])}')
             self.add_label(f'Ideal result = {f_rana([-488.662570, 512.0])}')
 
 

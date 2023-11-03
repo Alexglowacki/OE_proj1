@@ -69,14 +69,14 @@ class Mutation:
 
                 gene = list(gene)
 
-                if gene[random_idx_in_1st_point] == '0':
+                if (gene[random_idx_in_1st_point] == '0').any():
                     gene[random_idx_in_1st_point] = '1'
                 else:
                     gene[random_idx_in_1st_point] = '0'
 
                 print(gene)
 
-                gene = ''.join(gene)
+                gene = ''.join([str(element) for element in gene])
 
                 mutation_offspring.append(gene)
 
