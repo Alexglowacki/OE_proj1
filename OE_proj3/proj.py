@@ -7,9 +7,11 @@ import matplotlib.pyplot as plt
 
 import math
 
-def f_rana(individual):
-    ind = decodeInd(individual)
+def f_rana(invidual):
+    ind = decodeInd(invidual)
     point = ind
+
+    # point = invidual
     s = 0.0
     array = []
     for i in range(len(point) - 1):
@@ -21,7 +23,6 @@ def f_rana(individual):
         array.append(s)
     return array
 
-# dlugosc 40
 def invidual(icls):
     genome = list()
     for x in range(0, 40):
@@ -34,6 +35,7 @@ def decodeInd(invidual):
     # print(half_ind)
     var1 = int(''.join(map(str, invidual[:half_ind])), 2)
     var2 = int("".join(map(str, invidual[half_ind:])), 2)
+
     return var1, var2
 
 def fitnessFunction(individual):
@@ -43,11 +45,11 @@ def fitnessFunction(individual):
     result = (ind[0] + 2 * ind[1] - 7) ** 2 + (2 * ind[0] + ind[1] - 5) ** 2
     return result,
 
-def real_individual(icls):
-    genome = list()
-    genome.append(random.uniform(-10,10))
-    genome.append(random.uniform(-10,10))
-    return icls(genome)
+# def invidual(icls):
+#     genome = list()
+#     genome.append(random.uniform(-10,10))
+#     genome.append(random.uniform(-10,10))
+#     return icls(genome)
 
 if __name__ == "__main__":
 
@@ -153,6 +155,11 @@ if __name__ == "__main__":
     # plt.title("Best values of each evolution")
     # plt.title
     # plt.show()
+
+
+    # ========================================
+    # Elityzm
+    # ========================================
 
     best = list()
     g = 0
