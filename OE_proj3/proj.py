@@ -51,6 +51,21 @@ def fitnessFunction(individual):
 #     genome.append(random.uniform(-10,10))
 #     return icls(genome)
 
+def cross_arithmetic():
+    print("arithmetic")
+
+def cross_linear():
+    print("linear")
+
+def cross_alfa():
+    print('alfa')
+
+def cross_alfabeta():
+    print("alfabeta")
+
+def cross_avg():
+    print("avg")
+
 if __name__ == "__main__":
 
     # problem minimalizacji
@@ -88,14 +103,19 @@ if __name__ == "__main__":
     toolbox.register("mate", tools.cxTwoPoint)
 
     # mutation
-    toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.3)
+    # toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.3)
 
-    # toolbox.register("mutate", tools.mutFlipBit, indpb=0.3)
+    toolbox.register("mutate", tools.mutFlipBit, indpb=0.3)
+
+    # TYLKO DLA RECZYWISTYCH
+    # toolbox.register("mutate", tools.mutGaussian, mu=5, sigma=10, indpb=0.1)
+
+    # toolbox.register("mutate", tools.mutUniformInt, low=-10, up=10, indpb=0.1) 
 
     sizePopulation = 100
-    probabilityMutation = 0.2
-    probabilityCrossover = 0.2
-    numberIteration = 100
+    probabilityMutation = 0.8
+    probabilityCrossover = 0.8
+    numberIteration = 10000
     g = 0
 
     pop = toolbox.population(n=sizePopulation)
@@ -103,67 +123,12 @@ if __name__ == "__main__":
     for ind, fit in zip(pop, fitnesses):
         ind.fitness.values = fit
 
-    # best = list()
-    # while g < numberIteration:
-    #     g = g + 1
-    #     print("-- Generation %i --" % g)
-    #     # Select the next generation individuals
-    #     offspring = toolbox.select(pop, len(pop))
-    #     # Clone the selected individuals
-    #     offspring = list(map(toolbox.clone, offspring))
-    #     # Apply crossover and mutation on the offspring
-    #     for child1, child2 in zip(offspring[::2], offspring[1::2]):
-    #         # cross two individuals with probability CXPB
-    #         if random.random() < probabilityCrossover:
-    #             toolbox.mate(child1, child2)
-    #         # fitness values of the children
-    #         # must be recalculated later
-    #         del child1.fitness.values
-    #         del child2.fitness.values
-    #     for mutant in offspring:
-    #         # mutate an individual with probability MUTPB
-    #         if random.random() < probabilityMutation:
-    #             toolbox.mutate(mutant)
-    #             del mutant.fitness.values
-    #     # Evaluate the individuals with an invalid fitness
-    #     invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-    #     fitnesses = map(toolbox.evaluate, invalid_ind)
-    #     for ind, fit in zip(invalid_ind, fitnesses):
-    #         ind.fitness.values = fit
-    #     print(" Evaluated %i individuals" % len(invalid_ind))
-    #     pop[:] = offspring
-    #     # Gather all the fitnesses in one list and print the stats
-    #     fits = [ind.fitness.values[0] for ind in pop]
-    #     length = len(pop)
-    #     mean = sum(fits) / length
-    #     sum2 = sum(x * x for x in fits)
-    #     std = abs(sum2 / length - mean ** 2) ** 0.5
-    #     print(" Min %s" % min(fits))
-    #     print(" Max %s" % max(fits))
-    #     print(" Avg %s" % mean)
-    #     print(" Std %s" % std)
-    #     best_ind = tools.selBest(pop, 1)[0]
-    #     best.append(best_ind.fitness.values[0])
-    #     print("Best individual is %s, %s" % (best_ind,
-    #                                          best_ind.fitness.values))
-    #     #
-    #     print("-- End of (successful) evolution --")
-    # print(best)
-    
-    # plt.plot(range(numberIteration), best)
-    # plt.grid()
-    # plt.title("Best values of each evolution")
-    # plt.title
-    # plt.show()
+    min_vals = list()
+    max_vals = list()
+    avg_vals = list()
+    std_vals = list()
+    best_vals = list()
 
-
-    # ========================================
-    # Elityzm
-    # ========================================
-
-    best = list()
-    g = 0
-    numberElitism = 1
     while g < numberIteration:
         g = g + 1
         print("-- Generation %i --" % g)
@@ -171,9 +136,6 @@ if __name__ == "__main__":
         offspring = toolbox.select(pop, len(pop))
         # Clone the selected individuals
         offspring = list(map(toolbox.clone, offspring))
-        listElitism = []
-        for x in range(0, numberElitism):
-            listElitism.append(tools.selBest(pop, 1)[0])
         # Apply crossover and mutation on the offspring
         for child1, child2 in zip(offspring[::2], offspring[1::2]):
             # cross two individuals with probability CXPB
@@ -194,7 +156,7 @@ if __name__ == "__main__":
         for ind, fit in zip(invalid_ind, fitnesses):
             ind.fitness.values = fit
         print(" Evaluated %i individuals" % len(invalid_ind))
-        pop[:] = offspring + listElitism
+        pop[:] = offspring
         # Gather all the fitnesses in one list and print the stats
         fits = [ind.fitness.values[0] for ind in pop]
         length = len(pop)
@@ -205,19 +167,137 @@ if __name__ == "__main__":
         print(" Max %s" % max(fits))
         print(" Avg %s" % mean)
         print(" Std %s" % std)
+        min_vals.append(min(fits))
+        max_vals.append(max(fits))
+        avg_vals.append(mean)
+        std_vals.append(std)
         best_ind = tools.selBest(pop, 1)[0]
-        best.append(best_ind.fitness.values[0])
+        best_vals.append(best_ind.fitness.values[0])
         print("Best individual is %s, %s" % (best_ind,
                                              best_ind.fitness.values))
         #
         print("-- End of (successful) evolution --")
-
-    plt.plot(range(numberIteration), best)
+    
+    plt.subplot(2, 3, 1)
     plt.grid()
     plt.title("Best values of each evolution")
-    plt.title
+    plt.plot(range(numberIteration), best_vals)
+
+    plt.subplot(2, 3, 2)
+    plt.grid()
+    plt.title("Min values of each evolution")
+    plt.plot(range(numberIteration), min_vals)
+
+    plt.subplot(2, 3, 3)
+    plt.grid()
+    plt.title("Max values of each evolution")
+    plt.plot(range(numberIteration), max_vals)
+
+    plt.subplot(2, 3, 4)
+    plt.grid()
+    plt.title("Average values of each evolution")
+    plt.plot(range(numberIteration), avg_vals)
+
+    plt.subplot(2, 3, 5)
+    plt.grid()
+    plt.title("Std. deviation values of each evolution")
+    plt.plot(range(numberIteration), std_vals)
+
+    plt.rcParams["figure.figsize"] = (40, 10)
     plt.show()
 
 
-        
+    # ========================================
+    # Elityzm
+    # ========================================
+
+    # min_vals = list()
+    # max_vals = list()
+    # avg_vals = list()
+    # std_vals = list()
+    # best_vals = list()
+
+    # g = 0
+    # numberElitism = 1
+    # while g < numberIteration:
+    #     g = g + 1
+    #     print("-- Generation %i --" % g)
+    #     # Select the next generation individuals
+    #     offspring = toolbox.select(pop, len(pop))
+    #     # Clone the selected individuals
+    #     offspring = list(map(toolbox.clone, offspring))
+    #     listElitism = []
+    #     for x in range(0, numberElitism):
+    #         listElitism.append(tools.selBest(pop, 1)[0])
+    #     # Apply crossover and mutation on the offspring
+    #     for child1, child2 in zip(offspring[::2], offspring[1::2]):
+    #         # cross two individuals with probability CXPB
+    #         if random.random() < probabilityCrossover:
+    #             toolbox.mate(child1, child2)
+    #         # fitness values of the children
+    #         # must be recalculated later
+    #         del child1.fitness.values
+    #         del child2.fitness.values
+    #     for mutant in offspring:
+    #         # mutate an individual with probability MUTPB
+    #         if random.random() < probabilityMutation:
+    #             toolbox.mutate(mutant)
+    #             del mutant.fitness.values
+    #     # Evaluate the individuals with an invalid fitness
+    #     invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+    #     fitnesses = map(toolbox.evaluate, invalid_ind)
+    #     for ind, fit in zip(invalid_ind, fitnesses):
+    #         ind.fitness.values = fit
+    #     print(" Evaluated %i individuals" % len(invalid_ind))
+    #     pop[:] = offspring + listElitism
+    #     # Gather all the fitnesses in one list and print the stats
+    #     fits = [ind.fitness.values[0] for ind in pop]
+    #     length = len(pop)
+    #     mean = sum(fits) / length
+    #     sum2 = sum(x * x for x in fits)
+    #     std = abs(sum2 / length - mean ** 2) ** 0.5
+    #     print(" Min %s" % min(fits))
+    #     print(" Max %s" % max(fits))
+    #     print(" Avg %s" % mean)
+    #     print(" Std %s" % std)
+
+    #     min_vals.append(min(fits))
+    #     max_vals.append(max(fits))
+    #     avg_vals.append(mean)
+    #     std_vals.append(std)
+
+    #     best_ind = tools.selBest(pop, 1)[0]
+    #     best_vals.append(best_ind.fitness.values[0])
+    #     print("Best individual is %s, %s" % (best_ind,
+    #                                          best_ind.fitness.values))
+    #     #
+    #     print("-- End of (successful) evolution --")
+
+    # plt.subplot(2, 3, 1)
+    # plt.grid()
+    # plt.title("Best values of each evolution")
+    # plt.plot(range(numberIteration), best_vals)
+
+    # plt.subplot(2, 3, 2)
+    # plt.grid()
+    # plt.title("Min values of each evolution")
+    # plt.plot(range(numberIteration), min_vals)
+
+    # plt.subplot(2, 3, 3)
+    # plt.grid()
+    # plt.title("Max values of each evolution")
+    # plt.plot(range(numberIteration), max_vals)
+
+    # plt.subplot(2, 3, 4)
+    # plt.grid()
+    # plt.title("Average values of each evolution")
+    # plt.plot(range(numberIteration), avg_vals)
+
+    # plt.subplot(2, 3, 5)
+    # plt.grid()
+    # plt.title("Std. deviation values of each evolution")
+    # plt.plot(range(numberIteration), std_vals)
+
+    # plt.rcParams["figure.figsize"] = (40, 10)
+    # plt.show()
 
